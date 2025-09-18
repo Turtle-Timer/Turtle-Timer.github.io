@@ -11,9 +11,11 @@
         display:flex;
         align-items:center;
         justify-content:center;
-        background: url("https://i.ibb.co/bj7pk9Yx/Fond-Horloge-num-rique.png") no-repeat center center fixed;
+        background: url("https://i.ibb.co/60D4QHrz/Fond-Horloge.png") no-repeat center center fixed;
         background-size: cover;
         transition:all 0.5s ease-in-out;
+        overflow: hidden;
+        height: 100%;
     }
 
     .container {
@@ -22,6 +24,21 @@
         gap:1.25rem;
         align-items:center;
         position: relative;
+    }
+
+    img {
+        position:fixed;
+        transition: all 0.5s ease-in-out;
+    }
+    
+    .cadran {
+        width: 50em;
+        height: 25em
+    }
+    
+    .horloge {
+        width: 50em;
+        height: 50em
     }
 
     .hand {
@@ -34,34 +51,22 @@
     }
 
     .hand.hour {
-        width:5px;
-        height:10em;
+        width:8px;
+        height:11rem;
         background:#255240;
-        border-radius:6px;
     }
     .hand.minute {
-        width:5px;
-        height:13em;
-        background:#70f3c1c2;
+        width:8px;
+        height:14.9rem;
+        background:#70f3c1;
     }
     .hand.second {
-        width:5px;
-        height:15em;
-        background:transparent;
+        width:8px;
+        height:17.5rem;
+        background:#ff3b3b;
     }
-    .hand.second::after {
-        content:"";
-        display:block;
-        width:100%;
-        height:100%;
-        background:linear-gradient(to bottom, #ff6b6b, #ff3b3b);
-        border-radius:2px;
-        box-shadow: 0 1px 8px rgba(255,59,59,0.25);
-    }
-
     .clock {
         position: relative;
-        transform: translateY(-1em); 
     }
 
     button {
@@ -97,7 +102,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-52%, -50%);
+        transform: translate(-50%, -50%);
         font-family: monospace;
         font-size: 6rem;
         color: #255240;
@@ -106,7 +111,7 @@
     }
 
     .hand, .digital {
-    transition: opacity 0.5s ease;
+        transition: opacity 0.5s ease;
     }
 
     .hide {
@@ -120,24 +125,30 @@
     </style>
 </head>
 <body>
+    <img class="cadran show" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+    <img class="horloge hide" src="https://i.ibb.co/qv3d3zF/Horloge.png" alt="">
     <button onclick="ToggleType()" class="ToggleButton" id="ToggleButton">Analogique</button>
     <button onclick="DisplaySeconds()" class="SecondsButton" id="SecondsButton">Afficher les secondes</button>
+    <div class="digital show" id="digital" aria-live="polite" aria-atomic="true">--:--:--</div>
     <main class="container">
         <div class="clock">
             <div class="hand second hide" id="second"></div>
-            <div class="hand hour hide" id="hour"></div>
             <div class="hand minute hide" id="minute"></div>
+            <div class="hand hour hide" id="hour"></div>
         </div>
-        <div class="digital show" id="digital" aria-live="polite" aria-atomic="true">--:--:--</div>
     </main>
 
 <script>
-const $hour   = document.getElementById('hour');
-const $minute = document.getElementById('minute');
-const $second = document.getElementById('second');
-const $body   = document.body;
-const $digital = document.getElementById('digital');
-let showSeconds = false;
+    const $hour   = document.getElementById('hour');
+    const $minute = document.getElementById('minute');
+    const $second = document.getElementById('second');
+    const $digital = document.getElementById('digital');
+
+    const $body   = document.body;
+
+    const $cadran = document.querySelector('.cadran');
+    const $horloge = document.querySelector('.horloge');
+    let showSeconds = false;
 
     (function(){
 
@@ -155,18 +166,18 @@ let showSeconds = false;
             const minAngle = (mm + ss/60) * 6;
             const hourAngle = ((hh % 12) + mm/60) * 30;
 
-            $hour.style.transform   = `translate(-50%,-100%) rotate(${hourAngle}deg)`;
-            $minute.style.transform = `translate(-50%,-100%) rotate(${minAngle}deg)`;
             $second.style.transform = `translate(-50%,-100%) rotate(${secAngle}deg)`;
+            $minute.style.transform = `translate(-50%,-100%) rotate(${minAngle}deg)`;
+            $hour.style.transform   = `translate(-50%,-100%) rotate(${hourAngle}deg)`;
             if (showSeconds) {
                 if ($hour.classList.contains("show")) {
                     toggle($second, true);
                 }
-                $digital.style.fontSize = "6rem";
+                $digital.style.fontSize = "8rem";
                 $digital.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
             } else {
                 toggle($second, false);   
-                $digital.style.fontSize = "8rem";
+                $digital.style.fontSize = "10rem";
                 $digital.textContent = `${pad(hh)}:${pad(mm)}`;
             }
         }
@@ -176,83 +187,87 @@ let showSeconds = false;
             requestAnimationFrame(loop);
         }
         requestAnimationFrame(loop);
-})();
+    })();
 
-function toggle(el, show) {
-    if (show) {
-        el.classList.add("show");
-        el.classList.remove("hide");
-    } else {
-        el.classList.add("hide");
-        el.classList.remove("show");
-    }
-}
-
-function ToggleType() {
-    const buttontoggle  = document.getElementById('ToggleButton');
-    buttontoggle.disabled = true;
-    if (buttontoggle.innerHTML === "Numérique") {
-        buttontoggle.innerHTML = "Analogique";
-        toggle($hour, false);
-        toggle($minute, false);
-        toggle($second, false);
-
-        setTimeout(() => {
-            $body.style.backgroundImage = "url('https://i.ibb.co/bj7pk9Yx/Fond-Horloge-num-rique.png')";
-        }, 500);
-
-        setTimeout(() => {
-            toggle($digital, true);
-        }, 1000);
-    } else {
-        buttontoggle.innerHTML = "Numérique";
-        toggle($digital, false);
-
-        setTimeout(() => {
-            $body.style.backgroundImage = "url('https://i.ibb.co/MDjW9f4Q/Fond-Horloge.png')";
-        }, 500);
-
-        setTimeout(() => {
-            toggle($hour, true);
-            toggle($minute, true);
-            toggle($second, true);
-        }, 1000);
+    function toggle(el, show) {
+        if (show) {
+            el.classList.add("show");
+            el.classList.remove("hide");
+        } else {
+            el.classList.add("hide");
+            el.classList.remove("show");
+        }
     }
 
-    setTimeout(() => {
-        buttontoggle.disabled = false;
-    }, 2000);
-}
+    function ToggleType() {
+        const buttontoggle  = document.getElementById('ToggleButton');
+        buttontoggle.disabled = true;
+        if (buttontoggle.innerHTML === "Numérique") {
+            buttontoggle.innerHTML = "Analogique";
+            toggle($hour, false);
+            toggle($minute, false);
+            toggle($second, false);
 
-function DisplaySeconds() {
-    buttonseconds  = document.getElementById('SecondsButton');
-    buttonseconds.disabled = true;
-    if (showSeconds === false) {
-        if ($digital.classList.contains("show")) {
-            toggle($digital, false);
             setTimeout(() => {
+                toggle($cadran, true);
+                toggle($horloge, false);
+            }, 400);
+
+            setTimeout(() => {
+                toggle($digital, true);
+            }, 1000);
+        } else {
+            buttontoggle.innerHTML = "Numérique";
+            toggle($digital, false);
+
+            setTimeout(() => {
+                toggle($cadran, false);
+                toggle($horloge, true);
+            }, 400);
+
+            setTimeout(() => {
+                toggle($hour, true);
+                toggle($minute, true);
+                toggle($second, true);
+            }, 1000);
+        }
+
+        setTimeout(() => {
+            buttontoggle.disabled = false;
+        }, 2000);
+    }
+
+    function DisplaySeconds() {
+        const buttonseconds  = document.getElementById('SecondsButton');
+        buttonseconds.disabled = true;
+        if (showSeconds === false) {
+            buttonseconds.innerHTML = "Cacher les secondes";
+            if ($digital.classList.contains("show")) {
+                toggle($digital, false);
+                setTimeout(() => {
+                    showSeconds = true;
+                    toggle($digital, true);
+                }, 500);
+            } else {
                 showSeconds = true;
-                toggle($digital, true);
-            }, 500);
+            }
         } else {
-            showSeconds = true;
-        }
-    } else {
-        if ($digital.classList.contains("show")) {
-            toggle($digital, false);
-            setTimeout(() => {
+            buttonseconds.innerHTML = "Afficher les secondes";
+            if ($digital.classList.contains("show")) {
+                toggle($digital, false);
+                setTimeout(() => {
+                    showSeconds = false;
+                    toggle($digital, true);
+                }, 500);
+            } else {
                 showSeconds = false;
-                toggle($digital, true);
-            }, 500);
-        } else {
-            showSeconds = false;
+            }
         }
-    }
 
-    setTimeout(() => {
-        buttonseconds.disabled = false;
-    }, 1000);
-}
+        setTimeout(() => {
+            buttonseconds.disabled = false;
+        }, 1000);
+    }
 </script>
 </body>
 </html>
