@@ -18,55 +18,54 @@
         height: 100%;
     }
 
-    .container {
-        display:flex;
-        flex-direction:column;
-        gap:1.25rem;
-        align-items:center;
-        position: relative;
-    }
-
     img {
         position:fixed;
         transition: all 0.5s ease-in-out;
     }
     
     .cadran {
-        width: 50em;
-        height: 25em
+        width: 75vw;
+        height: 70vh;
+        aspect-ratio: 1 / 1;
     }
-    
+
     .horloge {
-        width: 50em;
-        height: 50em;
+        width: 110vmin;
+        height: auto;
+        aspect-ratio: 1 / 1;
+    }
+
+    .clock {
+        position: fixed;
+        width: 110vmin;
+        height: auto;
+        aspect-ratio: 1/1;
+        pointer-events: none;
     }
 
     .hand {
-        position:absolute;
-        left:50%;
-        top:50%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
         transform-origin: 50% 100%;
-        border-radius:4px;
+        border-radius: 4px;
         box-shadow: 0 2px 6px rgba(0,0,0,0.25);
     }
 
     .hand.hour {
-        width:8px;
-        height:11rem;
-        background:#255240;
+        width: 1.2%;
+        height: 20%;
+        background: #255240;
     }
     .hand.minute {
-        width:8px;
-        height:14.9rem;
-        background:#70f3c1;
+        width: 1%;
+        height: 30%;
+        background: #70f3c1;
     }
     .hand.second {
-        width:8px;
-        height:17.5rem;
-        background:#ff3b3b;
-    }
-    .clock {
-        position: relative;
+        width: 0.8%;
+        height: 35%;
+        background: #ff3b3b;
     }
 
     button {
@@ -78,7 +77,7 @@
         border:1px solid #fff;
         background-color:transparent;
         color:#fff;
-        font-size:1.25rem;
+        font-size:1.5vw;
         cursor: pointer;
         transition: all 0.5s ease-in-out;
     }
@@ -86,16 +85,18 @@
     button:hover {
         background-color:rgba(255,255,255,0.1);
         border-color:rgba(255,255,255,0.5);
-        transform: translateX(0.2em);
+        transform: translateX(0.4vw);
         
     }
 
     .ToggleButton {
         left:0;
+        width: 13vw;
     }
 
     .SecondsButton {
         right:0;
+        width: 20vw;
     }
 
     .digital {
@@ -104,7 +105,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         font-family: monospace;
-        color: #255240;
+            color: #255240;
         text-shadow: 0 2px 2px rgba(0,0,0,0.25);
         pointer-events: none;
     }
@@ -129,13 +130,11 @@
     <button onclick="ToggleType()" class="ToggleButton" id="ToggleButton">Analogique</button>
     <button onclick="DisplaySeconds()" class="SecondsButton" id="SecondsButton">Afficher les secondes</button>
     <div class="digital show" id="digital" aria-live="polite" aria-atomic="true">--:--:--</div>
-    <main class="container">
-        <div class="clock">
-            <div class="hand second hide" id="second"></div>
-            <div class="hand minute hide" id="minute"></div>
-            <div class="hand hour hide" id="hour"></div>
-        </div>
-    </main>
+    <div class="clock">
+        <div class="hand second hide" id="second"></div>
+        <div class="hand minute hide" id="minute"></div>
+        <div class="hand hour hide" id="hour"></div>
+    </div>
 
 <script>
     const $hour   = document.getElementById('hour');
@@ -172,11 +171,11 @@
                 if ($hour.classList.contains("show")) {
                     toggle($second, true);
                 }
-                $digital.style.fontSize = "9rem";
+                $digital.style.fontSize = "12vw";
                 $digital.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
             } else {
                 toggle($second, false);   
-                $digital.style.fontSize = "14rem";
+                $digital.style.fontSize = "20vw";
                 $digital.textContent = `${pad(hh)}:${pad(mm)}`;
             }
         }
@@ -270,5 +269,3 @@
 </script>
 </body>
 </html>
-
-
