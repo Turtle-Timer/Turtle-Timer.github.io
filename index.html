@@ -103,8 +103,8 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
         font-family: monospace;
+        transform: translate(-50%, -50%);
         color: #255240;
         text-shadow: 0 2px 2px rgba(0,0,0,0.25);
         pointer-events: none;
@@ -125,15 +125,17 @@
     </style>
 </head>
 <body>
+    <button onclick="DisplaySeconds()" class="SecondsButton" id="SecondsButton">Afficher les secondes</button>
+    <button onclick="ToggleType()" class="ToggleButton" id="ToggleButton">Analogique</button>
+
     <img class="cadran show" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
     <img class="horloge hide" src="https://i.ibb.co/qv3d3zF/Horloge.png" alt="">
-    <button onclick="ToggleType()" class="ToggleButton" id="ToggleButton">Analogique</button>
-    <button onclick="DisplaySeconds()" class="SecondsButton" id="SecondsButton">Afficher les secondes</button>
-    <div class="digital show" id="digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+    
     <div class="clock">
         <div class="hand second hide" id="second"></div>
         <div class="hand minute hide" id="minute"></div>
         <div class="hand hour hide" id="hour"></div>
+        <div class="digital show" id="digital" aria-live="polite" aria-atomic="true">--:--:--</div>
     </div>
 
 <script>
@@ -268,4 +270,3 @@
 </script>
 </body>
 </html>
-
