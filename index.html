@@ -25,7 +25,7 @@
     
     .cadran {
         width: 75vw;
-        aspect-ratio: 7 / 3;
+        aspect-ratio: 2 / 1;
         max-width: 70rem;
         max-height: 30rem;
     }
@@ -36,9 +36,10 @@
     }
 
     .clock {
-        position: absolute;
-        width: 100%;
-        height: 100%;
+        position: fixed;
+        width: 110vmin;
+        height: auto;
+        aspect-ratio: 1/1;
         pointer-events: none;
     }
 
@@ -52,18 +53,18 @@
     }
 
     .hand.hour {
-        width: 0.4%;
-        height: 23%;
+        width: 1.2%;
+        height: 20%;
         background: #255240;
     }
     .hand.minute {
-        width: 0.3%;
-        height: 34%;
+        width: 1%;
+        height: 30%;
         background: #70f3c1;
     }
     .hand.second {
-        width: 0.2%;
-        height: 37%;
+        width: 0.8%;
+        height: 35%;
         background: #ff3b3b;
     }
 
@@ -98,20 +99,13 @@
         width: 20vw;
     }
 
-    .digital-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
     .digital {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         font-family: monospace;
-        color: #255240;
+            color: #255240;
         text-shadow: 0 2px 2px rgba(0,0,0,0.25);
         pointer-events: none;
     }
@@ -135,14 +129,11 @@
     <img class="horloge hide" src="https://i.ibb.co/qv3d3zF/Horloge.png" alt="">
     <button onclick="ToggleType()" class="ToggleButton" id="ToggleButton">Analogique</button>
     <button onclick="DisplaySeconds()" class="SecondsButton" id="SecondsButton">Afficher les secondes</button>
+    <div class="digital show" id="digital" aria-live="polite" aria-atomic="true">--:--:--</div>
     <div class="clock">
         <div class="hand second hide" id="second"></div>
         <div class="hand minute hide" id="minute"></div>
         <div class="hand hour hide" id="hour"></div>
-
-        <div class="digital-container">
-            <div class="digital show" id="digital" aria-live="polite" aria-atomic="true">--:--:--</div>
-        </div>
     </div>
 
 <script>
