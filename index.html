@@ -162,8 +162,8 @@
             const ms = now.getMilliseconds();
             
             const secAngle = (ss + ms/1000) * 6;
-            const minAngle = (mm + ss/60) * 6;
-            const hourAngle = ((hh % 12) + mm/60) * 30;
+            const minAngle = (mm + ss/60 + ms/(60*1000)) * 6;
+            const hourAngle = ((hh % 12) + mm/60 + ss/(60*60) + ms/(60*60*1000)) * 30;
 
             $second.style.transform = `translate(-50%,-100%) rotate(${secAngle}deg)`;
             $minute.style.transform = `translate(-50%,-100%) rotate(${minAngle}deg)`;
@@ -270,3 +270,4 @@
 </script>
 </body>
 </html>
+
