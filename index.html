@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -111,6 +112,11 @@
         width: 20vw;
     }
 
+    .Button.Chrono.Freeze {
+        right: 30vw;
+        width: 15vw;
+    }
+
     .Button.Chrono.Start-Stop {
         right: 15vw;
         width: 13vw;
@@ -142,8 +148,15 @@
         pointer-events: none;
     }
 
-    .hand, .clock-digital, .chrono-digital, .timer-digital {
+    .hand, .clock-digital, .chrono-digital, .timer-digital, h2 {
         transition: opacity 0.5s ease-in-out;
+    }
+
+    .ms {
+        font-size: 0.35em;
+        vertical-align: bottom;
+        margin-left: 0.2em;
+        width: 0.5vw;
     }
 
     .hide {
@@ -172,6 +185,13 @@
         transform: translateX(-100%);
     }
 
+    .sidebar-separator {
+        height: 1px;
+        background-color: rgba(255,255,255,0.5);
+        margin: 0.5em 0;
+        width: 100%;
+    }
+
     .sidebar button {
         width: 100%;
         padding: 1em;
@@ -193,10 +213,8 @@
         transform: translateX(0);
     }
 
-    .sidebar-toggle {
+    .sidebar-toggle, .fullscreen-toggle {
         position: fixed;
-        top: 3vh;
-        left: 1.5vw;
         z-index: 20;
         background: #255240;
         color: #fff;
@@ -208,8 +226,18 @@
         transition: all 0.5s ease-in-out;
     }
 
-    .sidebar-toggle:hover {
+    .sidebar-toggle:hover, .fullscreen-toggle:hover {
         background-color:#427e66;
+    }
+
+    .sidebar-toggle {
+        top: 3vh;
+        left: 1.5vw;
+    }
+
+    .fullscreen-toggle {
+        bottom: 3vh;
+        right: 1.5vw;
     }
 
     .mode {
@@ -223,27 +251,61 @@
         visibility: hidden;
         pointer-events:none;
     }
+
+    footer {
+        text-align: center;
+        padding: 1em;
+        color: #fff;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        font-size: 1.1vw;
+    }
+
+    .mode.credits, .mode.problem, .mode.building {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        display: flex;
+        flex-direction:column;
+        font-size: 3vw;
+    }
+    .mode.credits p, .mode.problem p, .mode.building p {
+        margin: 0.2vh;
+        color: #fff;
+        width: 70%;
+    }
+    .mode.credits a {
+        color: #fff;
+        text-decoration: none;
+    }
+    .mode.credits a:hover {
+        text-decoration: underline;
+    }
     </style>
 </head>
 <body>
-    <div id="mode-clock" class="mode clock show">
+    <div id="mode-clock" class="mode clock hide">
         <button onclick="Clock.displaySeconds()" class="Button Clock SecondsButton" id="SecondsButton">Afficher les secondes</button>
         <button onclick="Clock.toggleType()" class="Button Clock ToggleButton" id="ToggleButton">Analogique</button>
 
-        <img id="clock-cadran" class="cadran show" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+        <img id="clock-cadran" class="cadran hide" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
         <img id="clock-horloge" class="horloge hide" src="https://i.ibb.co/qv3d3zF/Horloge.png" alt="">
         
         <div class="clock-components">
             <div class="hand second hide" id="second"></div>
             <div class="hand minute hide" id="minute"></div>
             <div class="hand hour hide" id="hour"></div>
-            <div class="clock-digital show" id="clock-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+            <div class="clock-digital hide" id="clock-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
         </div>
     </div>
 
     <div id="mode-chrono" class="mode chrono hide">
-        <button onclick="" class="Button Chrono Start-Stop" id="StartStopButton">Démarrer</button>
-        <button onclick="" class="Button Chrono Reset" id="ResetButton">Réinitialiser</button>
+        <button onclick="Chrono.freezeScreen()" class="Button Chrono Freeze" id="FreezeButton">Figer l'écran</button>
+        <button onclick="Chrono.startStop()" class="Button Chrono Start-Stop" id="StartStopButton">Démarrer</button>
+        <button onclick="Chrono.reset()" class="Button Chrono Reset" id="ResetButton">Réinitialiser</button>
 
         <img id="chrono-cadran" class="cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
         
@@ -263,14 +325,33 @@
         </div>
     </div>
 
+    <div id="mode-credits" class="mode credits hide">
+        <p id="credits-owner" class="show">Ce site internet est réalisé par : <span style="font-weight: bold;">TurtleSmile</span></p>
+        <p id="credits-problem" class="show">Pour toute suggestion, demande ou remarque, merci de me contacter sur <a href="https://discord.gg/H26UBrEsTc" target="_blank">Discord</a></p>
+    </div>
+
+    <div id="mode-problem" class="mode problem hide">
+        <p id="credits-warning"><span style="font-weight: bold;">Vous ne pouvez pas faire ça, merci de respecter les droits d'auteur !</span></p>
+    </div>
+
+    <div id="mode-building" class="mode building hide">
+        <p id="credits-building"><span style="font-weight: bold;">Cette partie du site est en construction, merci de revenir plus tard !</span></p>
+    </div>
 
     <div class="sidebar" id="sidebar">
         <button onclick="Sidebar.selectMode('clock')">Horloge</button>
-        <!--- <button onclick="Sidebar.selectMode('chrono')">Chrono</button>
-        <button onclick="Sidebar.selectMode('timer')">Minuteur</button> --->
+        <button onclick="Sidebar.selectMode('chrono')">Chrono</button>
+        <button onclick="Sidebar.selectMode('building')">En construction</button>
+        <!--- <button onclick="Sidebar.selectMode('timer')">Minuteur</button> --->
+        <div class="sidebar-separator"></div>
+        <button onclick="Sidebar.selectMode('credits')">Crédits</button>
     </div>
 
     <button id="sidebar-toggle" class="sidebar-toggle" onclick="Sidebar.toggle()">☰</button>
+    <button id="fullscreen-toggle" class="fullscreen-toggle" onclick="toggleFullScreen()">⛶</button>
+    <footer>
+        <h2 class="hide" id="legal-credits">© 2025 Turtle Timer 🐢 — All Rights Reserved</h2>
+    </footer>
     <script>
         /* ----------------- Helpers ----------------- */
         function setVisibility(el, show) {
@@ -285,6 +366,38 @@
 
         function pad(n){ return n.toString().padStart(2,'0'); }
 
+        function toggleFullScreen() {
+            const fullScreenButton = document.getElementById("fullscreen-toggle");
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                fullScreenButton.textContent = "🗗";
+            } else {
+                document.exitFullscreen();
+                fullScreenButton.textContent = "⛶";
+            }
+        }
+
+        document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+        document.addEventListener("keydown", (e) => {
+            if (
+                (e.ctrlKey && e.key.toLowerCase() === "u") ||   // Ctrl+U
+                (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") || // Ctrl+Shift+I
+                (e.key === "F12") ||  // F12
+                (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "c") // Ctrl+Shift+C
+            ) {
+                const warner = document.getElementById("credits-warning");
+
+                e.preventDefault();
+                Sidebar.selectMode("problem");
+
+                setTimeout(() => {
+                    const lastMode = localStorage.getItem("lastMode") || "clock";
+                    Sidebar.selectMode(lastMode);
+                }, 5000);
+            }
+        });
+
         /* ----------------- Clock Module ----------------- */
         const Clock = (() => {
             const $hour = document.getElementById('hour');
@@ -293,6 +406,8 @@
             const $digital = document.getElementById('clock-digital');
             const $cadran = document.getElementById('clock-cadran');
             const $horloge = document.getElementById('clock-horloge');
+
+            const $mode = document.getElementById('mode-clock');
 
             let showSeconds = false;
 
@@ -324,23 +439,20 @@
                 }
             }
 
-            function loop() { 
-                update(); 
-                requestAnimationFrame(loop); 
-            }
-
             function toggleType() {
                 const btn = document.getElementById('ToggleButton');
                 btn.disabled = true;
 
                 if (btn.innerHTML === "Numérique") {
                     btn.innerHTML = "Analogique";
+                    localStorage.setItem("clock-type", "Numérique");
                     setVisibility($hour,false);
                     setVisibility($minute,false);
                     setVisibility($second,false);
                     setTimeout(() => { setVisibility($cadran,true); setVisibility($horloge,false); }, 400);
                     setTimeout(() => { setVisibility($digital,true); }, 1000);
                 } else {
+                    localStorage.setItem("clock-type", "Analogique");
                     btn.innerHTML = "Numérique";
                     setVisibility($digital,false);
                     setTimeout(() => { setVisibility($cadran,false); setVisibility($horloge,true); }, 400);
@@ -361,12 +473,44 @@
                     setTimeout(() => {
                         setVisibility($digital, true);
                         showSeconds = !showSeconds;
+                        localStorage.setItem("display-seconds", showSeconds);
                     }, 500);
                 } else {
                     showSeconds = !showSeconds;
+                    localStorage.setItem("display-seconds", showSeconds);
                 }
 
                 setTimeout(() => btn.disabled = false, 1000);
+            }
+
+            window.addEventListener("DOMContentLoaded", () => {
+                const clockType = localStorage.getItem("clock-type") || "Numérique";
+                const displaySecondsLocalVar = localStorage.getItem("display-seconds") || "false";
+                const btnType = document.getElementById('ToggleButton');
+                const btnSec = document.getElementById('SecondsButton');
+
+                if (displaySecondsLocalVar === "true") {
+                    btnSec.innerHTML = "Cacher les secondes";
+                    showSeconds = true;
+                }
+
+                if (clockType === "Analogique") {
+                    btnType.innerHTML = "Numérique";
+                    setVisibility($horloge, true);
+                    setVisibility($hour, true);
+                    setVisibility($minute, true);
+                    if (showSeconds) setVisibility($second, true);
+                } else {
+                    setVisibility($cadran, true);
+                    setVisibility($digital, true);
+                }
+            });
+
+            function loop() { 
+                if ($mode.classList.contains("show")) {
+                    update();
+                }
+                requestAnimationFrame(loop); 
             }
 
             /* Initialisation */
@@ -381,27 +525,96 @@
             const $digital = document.getElementById('chrono-digital');
             const $startStop = document.getElementById('StartStopButton');
             const $reset = document.getElementById('ResetButton');
+            const $freeze = document.getElementById('FreezeButton');
 
-            function update() {
-                const now = new Date();
-                const hh = now.getHours();
-                const mm = now.getMinutes();
-                const ss = now.getSeconds();
-                const ms = now.getMilliseconds();
+            let isrunning = false;
+            let pending = false;
+            let removePending;
+            let freezed = false;
+            let timeFreezed;
 
-                $digital.style.fontSize = "12vw";
-                $digital.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
+            const $mode = document.getElementById('mode-chrono');
+
+            function getTime() {
+                elapsed = Date.now() - startTime;
+                const totalSeconds = Math.floor(elapsed / 1000);
+                const hh = Math.floor(totalSeconds / 3600);
+                const mm = Math.floor((totalSeconds % 3600) / 60);
+                const ss = totalSeconds % 60;
+                let ms = elapsed % 1000;
+
+                while (String(ms).length < 3) {
+                    ms = "0" + String(ms);
+                } 
+
+                return `${pad(hh)}:${pad(mm)}:${pad(ss)}<span class="ms">${pad(ms)}</span>`;
             }
 
-            function loop() { 
-                update(); 
+            function update() {
+                $digital.innerHTML = getTime();
+            }
+
+            function startStop() {
+                if (isrunning) {
+                    $startStop.innerHTML = "Démarrer";
+                    isrunning = false;
+                    if (pending) {
+                        removePending = Date.now();
+                    }
+                    if (freezed) {
+                        timeFreezed = getTime();
+                    }
+                } else {
+                    $startStop.innerHTML = "Arretter";
+                    isrunning = true;
+                    if (!pending) {
+                        startTime = Date.now();
+                        pending = true;
+                    } else {
+                        startTime += Date.now() - removePending;
+                    }
+                }
+            }
+
+            function reset() {
+                $startStop.innerHTML = "Démarrer";
+                isrunning = false;
+                pending = false;
+                if (freezed) {
+                    timeFreezed = `00:00:00<span class="ms">000</span>`;
+                } else {
+                    $digital.innerHTML = `00:00:00<span class="ms">000</span>`;
+                }
+            }
+
+            function freezeScreen() {
+                if (!freezed) {
+                    $freeze.innerHTML = "Rétablir l'écran";
+                    freezed = true;
+                } else {
+                    $freeze.innerHTML = "Figer l'écran";
+                    freezed = false;
+                    if (timeFreezed) {
+                        $digital.innerHTML = timeFreezed;
+                    }
+                }
+            }
+
+            function loop() {
+                if ($mode.classList.contains("show")) {
+                    if (isrunning && !freezed) {
+                        update();
+                    }
+                }
                 requestAnimationFrame(loop); 
             }
 
             /* Initialisation */
             loop();
+            $digital.style.fontSize = "12vw";
+            $digital.innerHTML = `00:00:00<span class="ms">000</span>`;
 
-            return {  };
+            return { startStop, reset, freezeScreen };
         })();
 
         /* ----------------- Timer Module ----------------- */
@@ -411,6 +624,8 @@
             const $startStop = document.getElementById('Button1');
             const $reset = document.getElementById('Button2');
 
+            let $mode = document.getElementById('mode-timer');
+
             function update() {
                 const now = new Date();
                 const hh = now.getHours();
@@ -423,7 +638,9 @@
             }
 
             function loop() { 
-                update(); 
+                if ($mode.classList.contains("show")) {
+                    update();
+                }
                 requestAnimationFrame(loop); 
             }
 
@@ -437,6 +654,7 @@
         const Sidebar = (() => {
             const sidebar = document.getElementById('sidebar');
             const toggleBtn = document.getElementById('sidebar-toggle');
+            const legalcredits = document.getElementById('legal-credits');
 
             function toggle() {
                 sidebar.classList.toggle("open");
@@ -446,14 +664,32 @@
             }
 
             function selectMode(mode) {
-                toggle();
+                if (sidebar.classList.contains("open")) toggle();
                 document.querySelectorAll('.mode').forEach(m => setVisibility(m,false));
                 setVisibility(document.getElementById("mode-" + mode), true);
-                console.log(mode);
+                if (mode !== "problem") {
+                    localStorage.setItem("lastMode", mode);
+                }
+                if (mode === "credits") {
+                    setVisibility(legalcredits, true);
+                } else {
+                    setVisibility(legalcredits, false);
+                }
             }
 
             window.addEventListener("resize", () => {
                 if (sidebar.classList.contains("open")) toggle();
+            });
+
+            window.addEventListener("DOMContentLoaded", () => {
+                const lastMode = localStorage.getItem("lastMode") || "clock";
+                document.querySelectorAll('.mode').forEach(m => setVisibility(m,false));
+                setVisibility(document.getElementById("mode-" + lastMode), true);
+                if (lastMode === "credits") {
+                    setVisibility(legalcredits, true);
+                } else {
+                    setVisibility(legalcredits, false);
+                }
             });
 
             return { toggle, selectMode };
