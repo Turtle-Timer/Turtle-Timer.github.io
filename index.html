@@ -6,16 +6,22 @@
     <title>Turtle Timer 🐢</title>
     <style>
     body {
-        min-height:100vh;
         margin:0;
-        display:flex;
-        align-items:center;
-        justify-content:center;
+        width: 100%;
+        height: 100%;
         background: url("https://i.ibb.co/60D4QHrz/Fond-Horloge.png") no-repeat center center fixed;
         background-size: cover;
         transition:all 0.5s ease-in-out;
         overflow: hidden;
-        height: 100%;
+    }
+
+    .mode {
+        margin:0;
+        width: 100vw;
+        height: 100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
     }
 
     img {
@@ -24,6 +30,9 @@
     }
     
     .cadran {
+        top: 50vh;
+        left: 50vw;
+        transform: translate(-50%, -50%);
         width: 75vw;
         aspect-ratio: 7 / 3;
         max-width: 70rem;
@@ -31,11 +40,14 @@
     }
 
     .horloge {
+        top: 50vh;
+        left: 50vw;
+        transform: translate(-50%, -50%);
         width: 110vmin;
         aspect-ratio: 1 / 1;
     }
 
-    .clock {
+    .clock-components {
         position: fixed;
         width: 110vmin;
         height: auto;
@@ -68,7 +80,7 @@
         background: #ff3b3b;
     }
 
-    button {
+    .Button {
         position:fixed;
         top:0;
         margin:1em;
@@ -80,26 +92,46 @@
         font-size:1.5vw;
         cursor: pointer;
         transition: all 0.5s ease-in-out;
+        z-index: 9;
     }
 
-    button:hover {
+    .Button:hover {
         background-color:rgba(255,255,255,0.1);
         border-color:rgba(255,255,255,0.5);
         transform: translateX(0.4vw);
-        
     }
 
-    .ToggleButton {
-        left:0;
+    .Button.Clock.ToggleButton {
+        right: 22vw;
         width: 13vw;
     }
 
-    .SecondsButton {
+    .Button.Clock.SecondsButton {
         right:0;
         width: 20vw;
     }
 
-    .digital {
+    .Button.Chrono.Start-Stop {
+        right: 15vw;
+        width: 13vw;
+    }
+
+    .Button.Chrono.Reset {
+        right: 0;
+        width: 13vw;
+    }
+
+    .Button.Timer.Start-Stop {
+        right: 15vw;
+        width: 13vw;
+    }
+
+    .Button.Timer.Reset {
+        right: 0;
+        width: 13vw;
+    }
+
+    .clock-digital, .chrono-digital, .timer-digital {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -110,8 +142,8 @@
         pointer-events: none;
     }
 
-    .hand, .digital {
-        transition: opacity 0.5s ease;
+    .hand, .clock-digital, .chrono-digital, .timer-digital {
+        transition: opacity 0.5s ease-in-out;
     }
 
     .hide {
@@ -122,152 +154,310 @@
     .show {
         opacity: 1;
     }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 15vw;
+        height: 100%;
+        background: rgba(37, 82, 64, 0.9);
+        display: flex;
+        flex-direction:column;
+        gap: 1em;
+        padding: 2em 1em;
+        transition: all 0.5s ease-in-out;
+        z-index: 10;
+        align-items: stretch;
+        transform: translateX(-100%);
+    }
+
+    .sidebar button {
+        width: 100%;
+        padding: 1em;
+        border: 1px solid #fff;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 1.5vw;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.5s ease-in-out;
+    }
+    .sidebar button:hover {
+        background: rgba(255,255,255,0.1);
+        border-color:rgba(255,255,255,0.5);
+        transform: translateX(0.4vw);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-toggle {
+        position: fixed;
+        top: 3vh;
+        left: 1.5vw;
+        z-index: 20;
+        background: #255240;
+        color: #fff;
+        border: none;
+        padding: 0.5em 1em;
+        font-size: 1.5vw;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.5s ease-in-out;
+    }
+
+    .sidebar-toggle:hover {
+        background-color:#427e66;
+    }
+
+    .mode {
+        transition: all 0.5s ease-in-out;
+    }
+    .mode.show {
+        visibility: visible;
+        pointer-events:all;
+    }
+    .mode.hide {
+        visibility: hidden;
+        pointer-events:none;
+    }
     </style>
 </head>
 <body>
-    <button onclick="DisplaySeconds()" class="SecondsButton" id="SecondsButton">Afficher les secondes</button>
-    <button onclick="ToggleType()" class="ToggleButton" id="ToggleButton">Analogique</button>
+    <div id="mode-clock" class="mode clock show">
+        <button onclick="Clock.displaySeconds()" class="Button Clock SecondsButton" id="SecondsButton">Afficher les secondes</button>
+        <button onclick="Clock.toggleType()" class="Button Clock ToggleButton" id="ToggleButton">Analogique</button>
 
-    <img class="cadran show" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
-    <img class="horloge hide" src="https://i.ibb.co/qv3d3zF/Horloge.png" alt="">
-    
-    <div class="clock">
-        <div class="hand second hide" id="second"></div>
-        <div class="hand minute hide" id="minute"></div>
-        <div class="hand hour hide" id="hour"></div>
-        <div class="digital show" id="digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+        <img id="clock-cadran" class="cadran show" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+        <img id="clock-horloge" class="horloge hide" src="https://i.ibb.co/qv3d3zF/Horloge.png" alt="">
+        
+        <div class="clock-components">
+            <div class="hand second hide" id="second"></div>
+            <div class="hand minute hide" id="minute"></div>
+            <div class="hand hour hide" id="hour"></div>
+            <div class="clock-digital show" id="clock-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+        </div>
     </div>
 
-<script>
-    const $hour   = document.getElementById('hour');
-    const $minute = document.getElementById('minute');
-    const $second = document.getElementById('second');
-    const $digital = document.getElementById('digital');
+    <div id="mode-chrono" class="mode chrono hide">
+        <button onclick="" class="Button Chrono Start-Stop" id="StartStopButton">Démarrer</button>
+        <button onclick="" class="Button Chrono Reset" id="ResetButton">Réinitialiser</button>
 
-    const $body   = document.body;
+        <img id="chrono-cadran" class="cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+        
+        <div class="chrono-components">
+            <div class="chrono-digital" id="chrono-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+        </div>
+    </div>
 
-    const $cadran = document.querySelector('.cadran');
-    const $horloge = document.querySelector('.horloge');
-    let showSeconds = false;
-    (function(){
+    <div id="mode-timer" class="mode timer hide">
+        <button onclick="" class="Button Timer Start-Stop" id="Button1">Bouton 1</button>
+        <button onclick="" class="Button Timer Reset" id="Button2">Bouton 2</button>
+
+        <img id="timer-cadran" class="cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+        
+        <div class="timer-components">
+            <div class="timer-digital" id="timer-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+        </div>
+    </div>
+
+
+    <div class="sidebar" id="sidebar">
+        <button onclick="Sidebar.selectMode('clock')">Horloge</button>
+        <!--- <button onclick="Sidebar.selectMode('chrono')">Chrono</button>
+        <button onclick="Sidebar.selectMode('timer')">Minuteur</button> --->
+    </div>
+
+    <button id="sidebar-toggle" class="sidebar-toggle" onclick="Sidebar.toggle()">☰</button>
+    <script>
+        /* ----------------- Helpers ----------------- */
+        function setVisibility(el, show) {
+            if (show) {
+                el.classList.add("show");
+                el.classList.remove("hide");
+            } else {
+                el.classList.add("hide");
+                el.classList.remove("show");
+            }
+        }
 
         function pad(n){ return n.toString().padStart(2,'0'); }
 
-        function update(){
-            const now = new Date();
+        /* ----------------- Clock Module ----------------- */
+        const Clock = (() => {
+            const $hour = document.getElementById('hour');
+            const $minute = document.getElementById('minute');
+            const $second = document.getElementById('second');
+            const $digital = document.getElementById('clock-digital');
+            const $cadran = document.getElementById('clock-cadran');
+            const $horloge = document.getElementById('clock-horloge');
 
-            const hh = now.getHours();
-            const mm = now.getMinutes();
-            const ss = now.getSeconds();
-            const ms = now.getMilliseconds();
-            
-            const secAngle = (ss + ms/1000) * 6;
-            const minAngle = (mm + ss/60 + ms/(60*1000)) * 6;
-            const hourAngle = ((hh % 12) + mm/60 + ss/(60*60) + ms/(60*60*1000)) * 30;
+            let showSeconds = false;
 
-            $second.style.transform = `translate(-50%,-100%) rotate(${secAngle}deg)`;
-            $minute.style.transform = `translate(-50%,-100%) rotate(${minAngle}deg)`;
-            $hour.style.transform   = `translate(-50%,-100%) rotate(${hourAngle}deg)`;
-            if (showSeconds) {
-                if ($hour.classList.contains("show")) {
-                    toggle($second, true);
+            function update() {
+                const now = new Date();
+                const hh = now.getHours();
+                const mm = now.getMinutes();
+                const ss = now.getSeconds();
+                const ms = now.getMilliseconds();
+
+                const secAngle = (ss + ms/1000) * 6;
+                const minAngle = (mm + ss/60 + ms/(60*1000)) * 6;
+                const hourAngle = ((hh % 12) + mm/60 + ss/(60*60) + ms/(60*60*1000)) * 30;
+
+                $second.style.transform = `translate(-50%,-100%) rotate(${secAngle}deg)`;
+                $minute.style.transform = `translate(-50%,-100%) rotate(${minAngle}deg)`;
+                $hour.style.transform   = `translate(-50%,-100%) rotate(${hourAngle}deg)`;
+
+                if (showSeconds) {
+                    if ($hour.classList.contains("show")) {
+                        setVisibility($second, true);
+                    }
+                    $digital.style.fontSize = "12vw";
+                    $digital.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
+                } else {
+                    setVisibility($second, false);   
+                    $digital.style.fontSize = "20vw";
+                    $digital.textContent = `${pad(hh)}:${pad(mm)}`;
                 }
+            }
+
+            function loop() { 
+                update(); 
+                requestAnimationFrame(loop); 
+            }
+
+            function toggleType() {
+                const btn = document.getElementById('ToggleButton');
+                btn.disabled = true;
+
+                if (btn.innerHTML === "Numérique") {
+                    btn.innerHTML = "Analogique";
+                    setVisibility($hour,false);
+                    setVisibility($minute,false);
+                    setVisibility($second,false);
+                    setTimeout(() => { setVisibility($cadran,true); setVisibility($horloge,false); }, 400);
+                    setTimeout(() => { setVisibility($digital,true); }, 1000);
+                } else {
+                    btn.innerHTML = "Numérique";
+                    setVisibility($digital,false);
+                    setTimeout(() => { setVisibility($cadran,false); setVisibility($horloge,true); }, 400);
+                    setTimeout(() => { setVisibility($hour,true); setVisibility($minute,true); setVisibility($second,true); }, 1000);
+                }
+
+                setTimeout(() => btn.disabled = false, 2000);
+            }
+
+            function displaySeconds() {
+                const btn = document.getElementById('SecondsButton');
+                btn.disabled = true;
+
+                btn.innerHTML = showSeconds ? "Afficher les secondes" : "Cacher les secondes";
+
+                if ($digital.classList.contains("show")) {
+                    setVisibility($digital, false);
+                    setTimeout(() => {
+                        setVisibility($digital, true);
+                        showSeconds = !showSeconds;
+                    }, 500);
+                } else {
+                    showSeconds = !showSeconds;
+                }
+
+                setTimeout(() => btn.disabled = false, 1000);
+            }
+
+            /* Initialisation */
+            loop();
+
+            return { toggleType, displaySeconds };
+        })();
+
+        /* ----------------- Chrono Module ----------------- */
+        const Chrono = (() => {
+            const $cadran = document.getElementById('chrono-cadran');
+            const $digital = document.getElementById('chrono-digital');
+            const $startStop = document.getElementById('StartStopButton');
+            const $reset = document.getElementById('ResetButton');
+
+            function update() {
+                const now = new Date();
+                const hh = now.getHours();
+                const mm = now.getMinutes();
+                const ss = now.getSeconds();
+                const ms = now.getMilliseconds();
+
                 $digital.style.fontSize = "12vw";
                 $digital.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
-            } else {
-                toggle($second, false);   
-                $digital.style.fontSize = "20vw";
-                $digital.textContent = `${pad(hh)}:${pad(mm)}`;
             }
-        }
 
-        function loop(){
-            update();
-            requestAnimationFrame(loop);
-        }
-        requestAnimationFrame(loop);
-    })();
-
-    function toggle(el, show) {
-        if (show) {
-            el.classList.add("show");
-            el.classList.remove("hide");
-        } else {
-            el.classList.add("hide");
-            el.classList.remove("show");
-        }
-    }
-
-    function ToggleType() {
-        const buttontoggle  = document.getElementById('ToggleButton');
-        buttontoggle.disabled = true;
-        if (buttontoggle.innerHTML === "Numérique") {
-            buttontoggle.innerHTML = "Analogique";
-            toggle($hour, false);
-            toggle($minute, false);
-            toggle($second, false);
-
-            setTimeout(() => {
-                toggle($cadran, true);
-                toggle($horloge, false);
-            }, 400);
-
-            setTimeout(() => {
-                toggle($digital, true);
-            }, 1000);
-        } else {
-            buttontoggle.innerHTML = "Numérique";
-            toggle($digital, false);
-
-            setTimeout(() => {
-                toggle($cadran, false);
-                toggle($horloge, true);
-            }, 400);
-
-            setTimeout(() => {
-                toggle($hour, true);
-                toggle($minute, true);
-                toggle($second, true);
-            }, 1000);
-        }
-
-        setTimeout(() => {
-            buttontoggle.disabled = false;
-        }, 2000);
-    }
-
-    function DisplaySeconds() {
-        const buttonseconds  = document.getElementById('SecondsButton');
-        buttonseconds.disabled = true;
-        if (showSeconds === false) {
-            buttonseconds.innerHTML = "Cacher les secondes";
-            if ($digital.classList.contains("show")) {
-                toggle($digital, false);
-                setTimeout(() => {
-                    showSeconds = true;
-                    toggle($digital, true);
-                }, 500);
-            } else {
-                showSeconds = true;
+            function loop() { 
+                update(); 
+                requestAnimationFrame(loop); 
             }
-        } else {
-            buttonseconds.innerHTML = "Afficher les secondes";
-            if ($digital.classList.contains("show")) {
-                toggle($digital, false);
-                setTimeout(() => {
-                    showSeconds = false;
-                    toggle($digital, true);
-                }, 500);
-            } else {
-                showSeconds = false;
-            }
-        }
 
-        setTimeout(() => {
-            buttonseconds.disabled = false;
-        }, 1000);
-    }
-</script>
+            /* Initialisation */
+            loop();
+
+            return {  };
+        })();
+
+        /* ----------------- Timer Module ----------------- */
+        const Timer = (() => {
+            const $cadran = document.getElementById('timer-cadran');
+            const $digital = document.getElementById('timer-digital');
+            const $startStop = document.getElementById('Button1');
+            const $reset = document.getElementById('Button2');
+
+            function update() {
+                const now = new Date();
+                const hh = now.getHours();
+                const mm = now.getMinutes();
+                const ss = now.getSeconds();
+                const ms = now.getMilliseconds();
+
+                $digital.style.fontSize = "12vw";
+                $digital.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
+            }
+
+            function loop() { 
+                update(); 
+                requestAnimationFrame(loop); 
+            }
+
+            /* Initialisation */
+            loop();
+
+            return {  };
+        })();
+
+        /* ----------------- Sidebar Module ----------------- */
+        const Sidebar = (() => {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('sidebar-toggle');
+
+            function toggle() {
+                sidebar.classList.toggle("open");
+                toggleBtn.style.left = sidebar.classList.contains("open")
+                    ? sidebar.offsetWidth + 20 + "px"
+                    : "1.5vw";
+            }
+
+            function selectMode(mode) {
+                toggle();
+                document.querySelectorAll('.mode').forEach(m => setVisibility(m,false));
+                setVisibility(document.getElementById("mode-" + mode), true);
+                console.log(mode);
+            }
+
+            window.addEventListener("resize", () => {
+                if (sidebar.classList.contains("open")) toggle();
+            });
+
+            return { toggle, selectMode };
+        })();
+    </script>
 </body>
 </html>
-
