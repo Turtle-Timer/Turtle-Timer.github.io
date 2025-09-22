@@ -59,12 +59,12 @@
         </div>
 
         <div class="sidebar" id="sidebar">
-            <button onclick="Sidebar.selectMode('clock')">Horloge</button>
-            <button onclick="Sidebar.selectMode('chrono')">Chrono</button>
-            <button onclick="Sidebar.selectMode('building')">En construction</button>
-            <!--- <button onclick="Sidebar.selectMode('timer')">Minuteur</button> --->
+            <button onclick="Sidebar.selectMode('clock')">Horloge <i class="fa-solid fa-clock"></i></button>
+            <button onclick="Sidebar.selectMode('chrono')">Chrono <i class="fa-solid fa-stopwatch"></i></button>
+            <button onclick="Sidebar.selectMode('building')">En travaux <i class="fa-solid fa-wrench"></i></button>
+            <!--- <button onclick="Sidebar.selectMode('timer')">Minuteur <i class="fa-solid fa-hourglass-half"></i></button> --->
             <div class="sidebar-separator"></div>
-            <button onclick="Sidebar.selectMode('credits')">Crédits</button>
+            <button onclick="Sidebar.selectMode('credits')">Crédits <i class="fa-solid fa-user"></i></button>
         </div>
 
         <button id="sidebar-toggle" class="sidebar-toggle" onclick="Sidebar.toggle()"><i class="fa-solid fa-bars"></i></button>
@@ -378,12 +378,19 @@
             const fullScreenButton = document.getElementById("fullscreen-toggle");
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
-                fullScreenButton.innerHTML = '<i class="fa-solid fa-compress"></i>';
             } else {
                 document.exitFullscreen();
-                fullScreenButton.innerHTML = '<i class="fa-solid fa-expand"></i>';
             }
         }
+
+        document.addEventListener("fullscreenchange", () => {
+            const fullScreenButton = document.getElementById("fullscreen-toggle");
+            if (document.fullscreenElement) {
+                fullScreenButton.innerHTML = '<i class="fa-solid fa-compress"></i>';
+            } else {
+                fullScreenButton.innerHTML = '<i class="fa-solid fa-expand"></i>';
+            }
+        });
 
         document.addEventListener("contextmenu", (e) => e.preventDefault());
 
@@ -653,7 +660,7 @@
                 const ms = now.getMilliseconds();
 
                 $digital.style.fontSize = "12vw";
-                $digital.innerHTML = "${pad(hh)}:${pad(mm)}:${pad(ss)}";
+                $digital.innerHTML = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
             }
 
             function loop() { 
