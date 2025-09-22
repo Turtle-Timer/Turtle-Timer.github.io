@@ -1,356 +1,358 @@
 <!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Turtle Timer 🐢</title>
-    <style>
-    body {
-        margin:0;
-        width: 100%;
-        height: 100%;
-        background: url("https://i.ibb.co/60D4QHrz/Fond-Horloge.png") no-repeat center center fixed;
-        background-size: cover;
-        transition:all 0.5s ease-in-out;
-        overflow: hidden;
-    }
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <title>Turtle Timer 🐢</title>
+    </head>
+    <body>
+        <div id="mode-clock" class="mode clock hide">
+            <button onclick="Clock.displaySeconds()" class="Button Clock SecondsButton" id="SecondsButton">Afficher les secondes</button>
+            <button onclick="Clock.toggleType()" class="Button Clock ToggleButton" id="ToggleButton">Analogique</button>
 
-    .mode {
-        margin:0;
-        width: 100vw;
-        height: 100vh;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-    }
-
-    img {
-        position:fixed;
-        transition: all 0.5s ease-in-out;
-    }
-    
-    .cadran {
-        top: 50vh;
-        left: 50vw;
-        transform: translate(-50%, -50%);
-        width: 75vw;
-        aspect-ratio: 7 / 3;
-        max-width: 70rem;
-        max-height: 30rem;
-    }
-
-    .horloge {
-        top: 50vh;
-        left: 50vw;
-        transform: translate(-50%, -50%);
-        width: 110vmin;
-        aspect-ratio: 1 / 1;
-    }
-
-    .clock-components {
-        position: fixed;
-        width: 110vmin;
-        height: auto;
-        aspect-ratio: 1/1;
-        pointer-events: none;
-    }
-
-    .hand {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform-origin: 50% 100%;
-        border-radius: 4px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-    }
-
-    .hand.hour {
-        width: 1.2%;
-        height: 20%;
-        background: #255240;
-    }
-    .hand.minute {
-        width: 1%;
-        height: 30%;
-        background: #70f3c1;
-    }
-    .hand.second {
-        width: 0.8%;
-        height: 35%;
-        background: #ff3b3b;
-    }
-
-    .Button {
-        position:fixed;
-        top:0;
-        margin:1em;
-        padding:0.5em 1em;
-        border-radius:4px;
-        border:1px solid #fff;
-        background-color:transparent;
-        color:#fff;
-        font-size:1.5vw;
-        cursor: pointer;
-        transition: all 0.5s ease-in-out;
-        z-index: 9;
-    }
-
-    .Button:hover {
-        background-color:rgba(255,255,255,0.1);
-        border-color:rgba(255,255,255,0.5);
-        transform: translateX(0.4vw);
-    }
-
-    .Button.Clock.ToggleButton {
-        right: 22vw;
-        width: 13vw;
-    }
-
-    .Button.Clock.SecondsButton {
-        right:0;
-        width: 20vw;
-    }
-
-    .Button.Chrono.Freeze {
-        right: 30vw;
-        width: 15vw;
-    }
-
-    .Button.Chrono.Start-Stop {
-        right: 15vw;
-        width: 13vw;
-    }
-
-    .Button.Chrono.Reset {
-        right: 0;
-        width: 13vw;
-    }
-
-    .Button.Timer.Start-Stop {
-        right: 15vw;
-        width: 13vw;
-    }
-
-    .Button.Timer.Reset {
-        right: 0;
-        width: 13vw;
-    }
-
-    .clock-digital, .chrono-digital, .timer-digital {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        font-family: monospace;
-        transform: translate(-50%, -50%);
-        color: #255240;
-        text-shadow: 0 2px 2px rgba(0,0,0,0.25);
-        pointer-events: none;
-    }
-
-    .hand, .clock-digital, .chrono-digital, .timer-digital, h2 {
-        transition: opacity 0.5s ease-in-out;
-    }
-
-    .ms {
-        font-size: 0.35em;
-        vertical-align: bottom;
-        margin-left: 0.2em;
-        width: 0.5vw;
-    }
-
-    .hide {
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    .show {
-        opacity: 1;
-    }
-
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 15vw;
-        height: 100%;
-        background: rgba(37, 82, 64, 0.9);
-        display: flex;
-        flex-direction:column;
-        gap: 1em;
-        padding: 2em 1em;
-        transition: all 0.5s ease-in-out;
-        z-index: 10;
-        align-items: stretch;
-        transform: translateX(-100%);
-    }
-
-    .sidebar-separator {
-        height: 1px;
-        background-color: rgba(255,255,255,0.5);
-        margin: 0.5em 0;
-        width: 100%;
-    }
-
-    .sidebar button {
-        width: 100%;
-        padding: 1em;
-        border: 1px solid #fff;
-        border-radius: 8px;
-        color: #fff;
-        font-size: 1.5vw;
-        background: transparent;
-        cursor: pointer;
-        transition: all 0.5s ease-in-out;
-    }
-    .sidebar button:hover {
-        background: rgba(255,255,255,0.1);
-        border-color:rgba(255,255,255,0.5);
-        transform: translateX(0.4vw);
-    }
-
-    .sidebar.open {
-        transform: translateX(0);
-    }
-
-    .sidebar-toggle, .fullscreen-toggle {
-        position: fixed;
-        z-index: 20;
-        background: #255240;
-        color: #fff;
-        border: none;
-        padding: 0.5em 1em;
-        font-size: 1.5vw;
-        cursor: pointer;
-        border-radius: 4px;
-        transition: all 0.5s ease-in-out;
-    }
-
-    .sidebar-toggle:hover, .fullscreen-toggle:hover {
-        background-color:#427e66;
-    }
-
-    .sidebar-toggle {
-        top: 3vh;
-        left: 1.5vw;
-    }
-
-    .fullscreen-toggle {
-        bottom: 3vh;
-        right: 1.5vw;
-    }
-
-    .mode {
-        transition: all 0.5s ease-in-out;
-    }
-    .mode.show {
-        visibility: visible;
-        pointer-events:all;
-    }
-    .mode.hide {
-        visibility: hidden;
-        pointer-events:none;
-    }
-
-    footer {
-        text-align: center;
-        padding: 1em;
-        color: #fff;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        font-size: 1.1vw;
-    }
-
-    .mode.credits, .mode.problem, .mode.building {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        display: flex;
-        flex-direction:column;
-        font-size: 3vw;
-    }
-    .mode.credits p, .mode.problem p, .mode.building p {
-        margin: 0.2vh;
-        color: #fff;
-        width: 70%;
-    }
-    .mode.credits a {
-        color: #fff;
-        text-decoration: none;
-    }
-    .mode.credits a:hover {
-        text-decoration: underline;
-    }
-    </style>
-</head>
-<body>
-    <div id="mode-clock" class="mode clock hide">
-        <button onclick="Clock.displaySeconds()" class="Button Clock SecondsButton" id="SecondsButton">Afficher les secondes</button>
-        <button onclick="Clock.toggleType()" class="Button Clock ToggleButton" id="ToggleButton">Analogique</button>
-
-        <img id="clock-cadran" class="cadran hide" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
-        <img id="clock-horloge" class="horloge hide" src="https://i.ibb.co/qv3d3zF/Horloge.png" alt="">
-        
-        <div class="clock-components">
-            <div class="hand second hide" id="second"></div>
-            <div class="hand minute hide" id="minute"></div>
-            <div class="hand hour hide" id="hour"></div>
-            <div class="clock-digital hide" id="clock-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+            <img id="clock-cadran" class="cadran hide" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+            <img id="clock-horloge" class="horloge hide" src="https://i.ibb.co/qv3d3zF/Horloge.png" alt="">
+            
+            <div class="clock-components">
+                <div class="hand second hide" id="second"></div>
+                <div class="hand minute hide" id="minute"></div>
+                <div class="hand hour hide" id="hour"></div>
+                <div class="clock-digital hide" id="clock-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+            </div>
         </div>
-    </div>
 
-    <div id="mode-chrono" class="mode chrono hide">
-        <button onclick="Chrono.freezeScreen()" class="Button Chrono Freeze" id="FreezeButton">Figer l'écran</button>
-        <button onclick="Chrono.startStop()" class="Button Chrono Start-Stop" id="StartStopButton">Démarrer</button>
-        <button onclick="Chrono.reset()" class="Button Chrono Reset" id="ResetButton">Réinitialiser</button>
+        <div id="mode-chrono" class="mode chrono hide">
+            <button onclick="Chrono.freezeScreen()" class="Button Chrono Freeze" id="FreezeButton">Figer l'écran</button>
+            <button onclick="Chrono.startStop()" class="Button Chrono Start-Stop" id="StartStopButton">Démarrer</button>
+            <button onclick="Chrono.reset()" class="Button Chrono Reset" id="ResetButton">Réinitialiser</button>
 
-        <img id="chrono-cadran" class="cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
-        
-        <div class="chrono-components">
-            <div class="chrono-digital" id="chrono-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+            <img id="chrono-cadran" class="cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+            
+            <div class="chrono-components">
+                <div class="chrono-digital" id="chrono-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+            </div>
         </div>
-    </div>
 
-    <div id="mode-timer" class="mode timer hide">
-        <button onclick="" class="Button Timer Start-Stop" id="Button1">Bouton 1</button>
-        <button onclick="" class="Button Timer Reset" id="Button2">Bouton 2</button>
+        <div id="mode-timer" class="mode timer hide">
+            <button onclick="" class="Button Timer Start-Stop" id="Button1">Bouton 1</button>
+            <button onclick="" class="Button Timer Reset" id="Button2">Bouton 2</button>
 
-        <img id="timer-cadran" class="cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
-        
-        <div class="timer-components">
-            <div class="timer-digital" id="timer-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+            <img id="timer-cadran" class="cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+            
+            <div class="timer-components">
+                <div class="timer-digital" id="timer-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+            </div>
         </div>
-    </div>
 
-    <div id="mode-credits" class="mode credits hide">
-        <p id="credits-owner" class="show">Ce site internet est réalisé par : <span style="font-weight: bold;">TurtleSmile</span></p>
-        <p id="credits-problem" class="show">Pour toute suggestion, demande ou remarque, merci de me contacter sur <a href="https://discord.gg/H26UBrEsTc" target="_blank">Discord</a></p>
-    </div>
+        <div id="mode-credits" class="mode credits hide">
+            <p id="credits-owner" class="show">Ce site internet est réalisé par : <span style="font-weight: bold;">TurtleSmile</span></p>
+            <p id="credits-problem" class="show">Pour toute suggestion, demande ou remarque, merci de me contacter sur <a href="https://discord.gg/H26UBrEsTc" target="_blank">Discord</a></p>
+        </div>
 
-    <div id="mode-problem" class="mode problem hide">
-        <p id="credits-warning"><span style="font-weight: bold;">Vous ne pouvez pas faire ça, merci de respecter les droits d'auteur !</span></p>
-    </div>
+        <div id="mode-problem" class="mode problem hide">
+            <p id="credits-warning"><span style="font-weight: bold;">Vous ne pouvez pas faire ça, merci de respecter les droits d'auteur !</span></p>
+        </div>
 
-    <div id="mode-building" class="mode building hide">
-        <p id="credits-building"><span style="font-weight: bold;">Cette partie du site est en construction, merci de revenir plus tard !</span></p>
-    </div>
+        <div id="mode-building" class="mode building hide">
+            <p id="credits-building"><span style="font-weight: bold;">Cette partie du site est en construction, merci de revenir plus tard !</span></p>
+        </div>
 
-    <div class="sidebar" id="sidebar">
-        <button onclick="Sidebar.selectMode('clock')">Horloge</button>
-        <button onclick="Sidebar.selectMode('chrono')">Chrono</button>
-        <button onclick="Sidebar.selectMode('building')">En construction</button>
-        <!--- <button onclick="Sidebar.selectMode('timer')">Minuteur</button> --->
-        <div class="sidebar-separator"></div>
-        <button onclick="Sidebar.selectMode('credits')">Crédits</button>
-    </div>
+        <div class="sidebar" id="sidebar">
+            <button onclick="Sidebar.selectMode('clock')">Horloge</button>
+            <button onclick="Sidebar.selectMode('chrono')">Chrono</button>
+            <button onclick="Sidebar.selectMode('building')">En construction</button>
+            <!--- <button onclick="Sidebar.selectMode('timer')">Minuteur</button> --->
+            <div class="sidebar-separator"></div>
+            <button onclick="Sidebar.selectMode('credits')">Crédits</button>
+        </div>
 
-    <button id="sidebar-toggle" class="sidebar-toggle" onclick="Sidebar.toggle()">☰</button>
-    <button id="fullscreen-toggle" class="fullscreen-toggle" onclick="toggleFullScreen()">⛶</button>
+        <button id="sidebar-toggle" class="sidebar-toggle" onclick="Sidebar.toggle()"><i class="fa-solid fa-bars"></i></button>
+        <button id="fullscreen-toggle" class="fullscreen-toggle" onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i></button>
+    </body>
     <footer>
         <h2 class="hide" id="legal-credits">© 2025 Turtle Timer 🐢 — All Rights Reserved</h2>
     </footer>
+    <style>
+        body {
+            margin:0;
+            width: 100%;
+            height: 100%;
+            background: url("https://i.ibb.co/60D4QHrz/Fond-Horloge.png") no-repeat center center fixed;
+            background-size: cover;
+            transition:all 0.5s ease-in-out;
+            overflow: hidden;
+        }
+
+        .mode {
+            margin:0;
+            width: 100vw;
+            height: 100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        img {
+            position:fixed;
+            transition: all 0.5s ease-in-out;
+        }
+        
+        .cadran {
+            top: 50vh;
+            left: 50vw;
+            transform: translate(-50%, -50%);
+            width: 75vw;
+            aspect-ratio: 7 / 3;
+            max-width: 70rem;
+            max-height: 30rem;
+        }
+
+        .horloge {
+            top: 50vh;
+            left: 50vw;
+            transform: translate(-50%, -50%);
+            width: 110vmin;
+            aspect-ratio: 1 / 1;
+        }
+
+        .clock-components {
+            position: fixed;
+            width: 110vmin;
+            height: auto;
+            aspect-ratio: 1/1;
+            pointer-events: none;
+        }
+
+        .hand {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform-origin: 50% 100%;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        }
+
+        .hand.hour {
+            width: 1.2%;
+            height: 20%;
+            background: #255240;
+        }
+        .hand.minute {
+            width: 1%;
+            height: 30%;
+            background: #70f3c1;
+        }
+        .hand.second {
+            width: 0.8%;
+            height: 35%;
+            background: #ff3b3b;
+        }
+
+        .Button {
+            position:fixed;
+            top:0;
+            margin:1em;
+            padding:0.5em 1em;
+            border-radius:4px;
+            border:1px solid #fff;
+            background-color:transparent;
+            color:#fff;
+            font-size:1.5vw;
+            cursor: pointer;
+            transition: all 0.5s ease-in-out;
+            z-index: 9;
+        }
+
+        .Button:hover {
+            background-color:rgba(255,255,255,0.1);
+            border-color:rgba(255,255,255,0.5);
+            transform: translateX(0.4vw);
+        }
+
+        .Button.Clock.ToggleButton {
+            right: 22vw;
+            width: 13vw;
+        }
+
+        .Button.Clock.SecondsButton {
+            right:0;
+            width: 20vw;
+        }
+
+        .Button.Chrono.Freeze {
+            right: 30vw;
+            width: 15vw;
+        }
+
+        .Button.Chrono.Start-Stop {
+            right: 15vw;
+            width: 13vw;
+        }
+
+        .Button.Chrono.Reset {
+            right: 0;
+            width: 13vw;
+        }
+
+        .Button.Timer.Start-Stop {
+            right: 15vw;
+            width: 13vw;
+        }
+
+        .Button.Timer.Reset {
+            right: 0;
+            width: 13vw;
+        }
+
+        .clock-digital, .chrono-digital, .timer-digital {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            font-family: monospace;
+            transform: translate(-50%, -50%);
+            color: #255240;
+            text-shadow: 0 2px 2px rgba(0,0,0,0.25);
+            pointer-events: none;
+        }
+
+        .hand, .clock-digital, .chrono-digital, .timer-digital, h2 {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .ms {
+            font-size: 0.35em;
+            vertical-align: bottom;
+            margin-left: 0.2em;
+            width: 0.5vw;
+        }
+
+        .hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .show {
+            opacity: 1;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 15vw;
+            height: 100%;
+            background: rgba(37, 82, 64, 0.9);
+            display: flex;
+            flex-direction:column;
+            gap: 1em;
+            padding: 2em 1em;
+            transition: all 0.5s ease-in-out;
+            z-index: 10;
+            align-items: stretch;
+            transform: translateX(-100%);
+        }
+
+        .sidebar-separator {
+            height: 1px;
+            background-color: rgba(255,255,255,0.5);
+            margin: 0.5em 0;
+            width: 100%;
+        }
+
+        .sidebar button {
+            width: 100%;
+            padding: 1em;
+            border: 1px solid #fff;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.5vw;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.5s ease-in-out;
+        }
+        .sidebar button:hover {
+            background: rgba(255,255,255,0.1);
+            border-color:rgba(255,255,255,0.5);
+            transform: translateX(0.4vw);
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-toggle, .fullscreen-toggle {
+            position: fixed;
+            z-index: 20;
+            background: #255240;
+            color: #fff;
+            border: none;
+            padding: 0.5em 1em;
+            font-size: 1.5vw;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .sidebar-toggle:hover, .fullscreen-toggle:hover {
+            background-color:#427e66;
+        }
+
+        .sidebar-toggle {
+            top: 3vh;
+            left: 1.5vw;
+        }
+
+        .fullscreen-toggle {
+            bottom: 3vh;
+            right: 1.5vw;
+        }
+
+        .mode {
+            transition: all 0.5s ease-in-out;
+        }
+        .mode.show {
+            visibility: visible;
+            pointer-events:all;
+        }
+        .mode.hide {
+            visibility: hidden;
+            pointer-events:none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1em;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 1.1vw;
+        }
+
+        .mode.credits, .mode.problem, .mode.building {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            display: flex;
+            flex-direction:column;
+            font-size: 3vw;
+        }
+        .mode.credits p, .mode.problem p, .mode.building p {
+            margin: 0.2vh;
+            color: #fff;
+            width: 70%;
+        }
+        .mode.credits a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .mode.credits a:hover {
+            text-decoration: underline;
+        }
+    </style>
     <script>
         /* ----------------- Helpers ----------------- */
         function setVisibility(el, show) {
@@ -369,10 +371,10 @@
             const fullScreenButton = document.getElementById("fullscreen-toggle");
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
-                fullScreenButton.textContent = "🗗";
+                fullScreenButton.innerHTML = '<i class="fa-solid fa-compress"></i>';
             } else {
                 document.exitFullscreen();
-                fullScreenButton.textContent = "⛶";
+                fullScreenButton.innerHTML = '<i class="fa-solid fa-expand"></i>';
             }
         }
 
@@ -410,34 +412,6 @@
 
             let showSeconds = false;
 
-            function update() {
-                const now = new Date();
-                const hh = now.getHours();
-                const mm = now.getMinutes();
-                const ss = now.getSeconds();
-                const ms = now.getMilliseconds();
-
-                const secAngle = (ss + ms/1000) * 6;
-                const minAngle = (mm + ss/60 + ms/(60*1000)) * 6;
-                const hourAngle = ((hh % 12) + mm/60 + ss/(60*60) + ms/(60*60*1000)) * 30;
-
-                $second.style.transform = `translate(-50%,-100%) rotate(${secAngle}deg)`;
-                $minute.style.transform = `translate(-50%,-100%) rotate(${minAngle}deg)`;
-                $hour.style.transform   = `translate(-50%,-100%) rotate(${hourAngle}deg)`;
-
-                if (showSeconds) {
-                    if ($hour.classList.contains("show")) {
-                        setVisibility($second, true);
-                    }
-                    $digital.style.fontSize = "12vw";
-                    $digital.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
-                } else {
-                    setVisibility($second, false);   
-                    $digital.style.fontSize = "20vw";
-                    $digital.textContent = `${pad(hh)}:${pad(mm)}`;
-                }
-            }
-
             function toggleType() {
                 const btn = document.getElementById('ToggleButton');
                 btn.disabled = true;
@@ -470,7 +444,7 @@
                 if ($digital.classList.contains("show")) {
                     setVisibility($digital, false);
                     setTimeout(() => {
-                        setVisibility($digital, true);
+                        setVisibility($digital,true); 
                         showSeconds = !showSeconds;
                         localStorage.setItem("display-seconds", showSeconds);
                     }, 500);
@@ -504,6 +478,43 @@
                     setVisibility($digital, true);
                 }
             });
+
+            function update() {
+                const now = new Date();
+                const hh = now.getHours();
+                const mm = now.getMinutes();
+                const ss = now.getSeconds();
+                const ms = now.getMilliseconds();
+
+                if ($hour.classList.contains("show")) {
+                    const secAngle = (ss + ms/1000) * 6;
+                    const minAngle = (mm + ss/60 + ms/(60*1000)) * 6;
+                    const hourAngle = ((hh % 12) + mm/60 + ss/(60*60) + ms/(60*60*1000)) * 30;
+
+                    $second.style.transform = `translate(-50%,-100%) rotate(${secAngle}deg)`;
+                    $minute.style.transform = `translate(-50%,-100%) rotate(${minAngle}deg)`;
+                    $hour.style.transform   = `translate(-50%,-100%) rotate(${hourAngle}deg)`;
+                }
+                if (showSeconds) {
+                    if ($hour.classList.contains("show") && $second.classList.contains("hide")) {
+                        setVisibility($second, true);
+                    }
+                    $digital.style.fontSize = "12vw";
+                    $digital.innerHTML = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
+                    if ($digital.classList.contains("show") && $horloge.classList.contains("show")) {
+                        setVisibility($digital, false);
+                    }
+                } else {
+                    if ($second.classList.contains("show")) {
+                        setVisibility($second, false);
+                    }
+                    $digital.style.fontSize = "20vw";
+                    $digital.innerHTML = `${pad(hh)}:${pad(mm)}`;
+                    if ($digital.classList.contains("show") && $horloge.classList.contains("show")) {
+                        setVisibility($digital, false);
+                    }
+                }
+            }
 
             function loop() { 
                 if ($mode.classList.contains("show")) {
@@ -546,7 +557,7 @@
                     ms = "0" + String(ms);
                 } 
 
-                return `${pad(hh)}:${pad(mm)}:${pad(ss)}<span class="ms">${pad(ms)}</span>`;
+                return "${pad(hh)}:${pad(mm)}:${pad(ss)}<span class='ms'>${pad(ms)}</span>";
             }
 
             function update() {
@@ -581,9 +592,10 @@
                 isrunning = false;
                 pending = false;
                 if (freezed) {
-                    timeFreezed = `00:00:00<span class="ms">000</span>`;
+                    timeFreezed = "00:00:00<span class='ms'>000</span>";
                 } else {
-                    $digital.innerHTML = `00:00:00<span class="ms">000</span>`;
+                    $digital.innerHTML = "00:00:00<span class='ms'>000</span>";
+                    timeFreezed = "00:00:00<span class='ms'>000</span>";
                 }
             }
 
@@ -611,8 +623,8 @@
 
             /* Initialisation */
             loop();
-            $digital.style.fontSize = "12vw";
-            $digital.innerHTML = `00:00:00<span class="ms">000</span>`;
+            $digital.style.fontSize = "11.5vw";
+            $digital.innerHTML = "00:00:00<span class='ms'>000</span>";
 
             return { startStop, reset, freezeScreen };
         })();
@@ -634,7 +646,7 @@
                 const ms = now.getMilliseconds();
 
                 $digital.style.fontSize = "12vw";
-                $digital.textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
+                $digital.innerHTML = "${pad(hh)}:${pad(mm)}:${pad(ss)}";
             }
 
             function loop() { 
@@ -695,5 +707,4 @@
             return { toggle, selectMode };
         })();
     </script>
-</body>
 </html>
