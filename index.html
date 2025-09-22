@@ -396,20 +396,13 @@
 
         document.addEventListener("keydown", (e) => {
             if (
-                (e.ctrlKey && e.key.toLowerCase() === "u") ||   // Ctrl+U
-                (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") || // Ctrl+Shift+I
-                (e.key === "F12") ||  // F12
-                (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "c") // Ctrl+Shift+C
+                (e.ctrlKey && e.key.toLowerCase() === "u") ||
+                (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") ||
+                (e.key === "F12") ||
+                (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "c")
             ) {
-                const warner = document.getElementById("credits-warning");
-
                 e.preventDefault();
                 Sidebar.selectMode("problem");
-
-                setTimeout(() => {
-                    const lastMode = localStorage.getItem("lastMode") || "clock";
-                    Sidebar.selectMode(lastMode);
-                }, 5000);
             }
         });
 
