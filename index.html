@@ -679,7 +679,7 @@
             function toggle() {
                 sidebar.classList.toggle("open");
                 toggleBtn.style.left = sidebar.classList.contains("open")
-                    ? sidebar.offsetWidth + 20 + "px"
+                    ? `calc(${sidebar.offsetWidth}px + ${toggleBtn.offsetWidth / 2}px)`
                     : "1.5vw";
             }
 
@@ -716,4 +716,5 @@
         })();
     </script>
 </html>
+
 
