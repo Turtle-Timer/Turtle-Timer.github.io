@@ -116,7 +116,14 @@
             aspect-ratio: 1 / 1;
         }
 
-        .clock-components, .chrono-components, .timer-components {
+        .clock-components {
+            position: fixed;
+            width: 110vmin;
+            height: auto;
+            aspect-ratio: 1/1;
+            pointer-events: none;
+        }
+        .chrono-components {
             position: fixed;
             top: 50vh;
             left: 50vw;
@@ -557,7 +564,7 @@
                     ms = "0" + String(ms);
                 } 
 
-                return "${pad(hh)}:${pad(mm)}:${pad(ss)}<span class='ms'>${pad(ms)}</span>";
+                return `${pad(hh)}:${pad(mm)}:${pad(ss)}<span class='ms'>${pad(ms)}</span>`;
             }
 
             function update() {
@@ -592,10 +599,10 @@
                 isrunning = false;
                 pending = false;
                 if (freezed) {
-                    timeFreezed = "00:00:00<span class='ms'>000</span>";
+                    timeFreezed = `00:00:00<span class='ms'>000</span>`;
                 } else {
-                    $digital.innerHTML = "00:00:00<span class='ms'>000</span>";
-                    timeFreezed = "00:00:00<span class='ms'>000</span>";
+                    $digital.innerHTML = `00:00:00<span class='ms'>000</span>`;
+                    timeFreezed = `00:00:00<span class='ms'>000</span>`;
                 }
             }
 
