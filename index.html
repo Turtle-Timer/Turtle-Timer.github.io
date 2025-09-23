@@ -7,6 +7,10 @@
         <title>Turtle Timer 🐢</title>
     </head>
     <body>
+        <div id="loader" class="loader show">
+            <div class="spinner"></div>
+        </div>
+
         <div id="mode-clock" class="mode clock hide">
             <button onclick="Clock.displaySeconds()" class="Button Clock SecondsButton" id="SecondsButton">Afficher les secondes</button>
             <button onclick="Clock.toggleType()" class="Button Clock ToggleButton" id="ToggleButton">Analogique</button>
@@ -93,6 +97,31 @@
             justify-content:center;
         }
 
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: rgb(37, 82, 64);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: all 0.6s ease-in-out;
+        }
+
+        .spinner {
+            width: 16vw;
+            aspect-ratio: 1 / 1;
+            border-top: 1vh solid #fff;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         img {
             position:fixed;
             transition: all 0.5s ease-in-out;
@@ -104,8 +133,6 @@
             transform: translate(-50%, -50%);
             width: 75vw;
             aspect-ratio: 7 / 3;
-            max-width: 70rem;
-            max-height: 30rem;
         }
 
         .horloge {
@@ -550,6 +577,8 @@
             let removePending;
             let freezed = false;
             let timeFreezed;
+            let startTime;
+            let elapsed;
 
             const $mode = document.getElementById('mode-chrono');
 
@@ -712,9 +741,15 @@
                 }
             });
 
+            window.addEventListener("load", () => {
+                const loader = document.getElementById("loader");
+
+                setTimeout(() => {
+                    setVisibility(loader, false);
+                }, 500);
+            });
+
             return { toggle, selectMode };
         })();
     </script>
 </html>
-
-
