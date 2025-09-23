@@ -7,18 +7,24 @@
         <title>Turtle Timer 🐢</title>
     </head>
     <body>
-        <div id="loader" class="loader show">
-            <div class="spinner"></div>
+        <div class="loader show" id="loader">
+            <div class="spinner" id="spinner">
+            </div>
+            <div class="bouncer" id="bouncer">
+                <div id="bouncer-1"></div>
+                <div id="bouncer-2"></div>
+                <div id="bouncer-3"></div>
+            </div>
         </div>
 
-        <div id="mode-clock" class="mode clock hide">
+        <div class="mode clock hide" id="mode-clock">
             <button onclick="Clock.displaySeconds()" class="Button Clock SecondsButton" id="SecondsButton">Afficher les secondes</button>
             <button onclick="Clock.toggleType()" class="Button Clock ToggleButton" id="ToggleButton">Analogique</button>
 
-            <img id="clock-cadran" class="cadran hide" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
-            <img id="clock-horloge" class="horloge hide" src="https://i.ibb.co/qv3d3zF/Horloge.png" alt="">
+            <img class="cadran hide" id="clock-cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+            <img class="horloge hide" id="clock-horloge" src="https://i.ibb.co/qv3d3zF/Horloge.png" alt="">
             
-            <div class="clock-components">
+            <div class="clock-components" id="clock-components">
                 <div class="hand second hide" id="second"></div>
                 <div class="hand minute hide" id="minute"></div>
                 <div class="hand hour hide" id="hour"></div>
@@ -26,53 +32,53 @@
             </div>
         </div>
 
-        <div id="mode-chrono" class="mode chrono hide">
+        <div class="mode chrono hide" id="mode-chrono" >
             <button onclick="Chrono.freezeScreen()" class="Button Chrono Freeze" id="FreezeButton">Figer l'écran</button>
             <button onclick="Chrono.startStop()" class="Button Chrono Start-Stop" id="StartStopButton">Démarrer</button>
             <button onclick="Chrono.reset()" class="Button Chrono Reset" id="ResetButton">Réinitialiser</button>
 
-            <img id="chrono-cadran" class="cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+            <img class="cadran" id="chrono-cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
             
-            <div class="chrono-components">
+            <div class="chrono-components" id="chrono-components">
                 <div class="chrono-digital" id="chrono-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
             </div>
         </div>
 
-        <div id="mode-timer" class="mode timer hide">
-            <button onclick="" class="Button Timer Start-Stop" id="Button1">Bouton 1</button>
-            <button onclick="" class="Button Timer Reset" id="Button2">Bouton 2</button>
+        <div class="mode timer hide" id="mode-timer">
+            <button onclick="" class="Button Timer First" id="Button1">Bouton 1</button>
+            <button onclick="" class="Button Timer Second" id="Button2">Bouton 2</button>
 
-            <img id="timer-cadran" class="cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+            <img class="cadran" id="timer-cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
             
-            <div class="timer-components">
+            <div class="timer-components" id="timer-components">
                 <div class="timer-digital" id="timer-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
             </div>
         </div>
 
-        <div id="mode-credits" class="mode credits hide">
-            <p id="credits-owner" class="show">Ce site internet est réalisé par : <span style="font-weight: bold;">TurtleSmile</span></p>
-            <p id="credits-problem" class="show">Pour toute suggestion, demande ou remarque, merci de me contacter sur <a href="https://discord.gg/H26UBrEsTc" target="_blank">Discord</a></p>
+        <div class="mode credits hide" id="mode-credits">
+            <p class="show" id="credits-owner">Ce site internet est réalisé par : <span style="font-weight: bold;">TurtleSmile</span></p>
+            <p class="show" id="credits-problem">Pour toute suggestion, demande ou remarque, merci de me contacter sur <a href="https://discord.gg/H26UBrEsTc" target="_blank">Discord</a></p>
         </div>
 
-        <div id="mode-problem" class="mode problem hide">
+        <div class="mode problem hide" id="mode-problem">
             <p id="credits-warning"><span style="font-weight: bold;">Vous ne pouvez pas faire ça, merci de respecter les droits d'auteur !</span></p>
         </div>
 
-        <div id="mode-building" class="mode building hide">
+        <div class="mode building hide" id="mode-building">
             <p id="credits-building"><span style="font-weight: bold;">Cette partie du site est en construction, merci de revenir plus tard !</span></p>
         </div>
 
         <div class="sidebar" id="sidebar">
-            <button onclick="Sidebar.selectMode('clock')">Horloge <i class="fa-solid fa-clock"></i></button>
-            <button onclick="Sidebar.selectMode('chrono')">Chrono <i class="fa-solid fa-stopwatch"></i></button>
-            <button onclick="Sidebar.selectMode('building')">En travaux <i class="fa-solid fa-wrench"></i></button>
-            <!--- <button onclick="Sidebar.selectMode('timer')">Minuteur <i class="fa-solid fa-hourglass-half"></i></button> --->
-            <div class="sidebar-separator"></div>
-            <button onclick="Sidebar.selectMode('credits')">Crédits <i class="fa-solid fa-user"></i></button>
+            <button onclick="Sidebar.selectMode('clock')" id="clock-button">Horloge <i class="fa-solid fa-clock"></i></button>
+            <button onclick="Sidebar.selectMode('chrono')" id="chrono-button">Chrono <i class="fa-solid fa-stopwatch"></i></button>
+            <button onclick="Sidebar.selectMode('building')" id="building-button">En travaux <i class="fa-solid fa-wrench"></i></button>
+            <!--- <button onclick="Sidebar.selectMode('timer')" id="timer-button">Minuteur <i class="fa-solid fa-hourglass-half"></i></button> --->
+            <div class="sidebar-separator" id="sidebar-separator"></div>
+            <button onclick="Sidebar.selectMode('credits')" id="credits-button">Crédits <i class="fa-solid fa-user"></i></button>
         </div>
 
-        <button id="sidebar-toggle" class="sidebar-toggle" onclick="Sidebar.toggle()"><i class="fa-solid fa-bars"></i></button>
-        <button id="fullscreen-toggle" class="fullscreen-toggle" onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i></button>
+        <button onclick="Sidebar.toggle()" class="sidebar-toggle" id="sidebar-toggle"><i class="fa-solid fa-bars"></i></button>
+        <button onclick="toggleFullScreen()" class="fullscreen-toggle" id="fullscreen-toggle"><i class="fa-solid fa-expand"></i></button>
     </body>
     <footer>
         <h2 class="hide" id="legal-credits">© 2025 Turtle Timer 🐢 — All Rights Reserved</h2>
@@ -88,15 +94,6 @@
             overflow: hidden;
         }
 
-        .mode {
-            margin:0;
-            width: 100vw;
-            height: 100vh;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-        }
-
         .loader {
             position: fixed;
             inset: 0;
@@ -109,17 +106,47 @@
             z-index: 9999;
             transition: all 0.6s ease-in-out;
         }
+        .loader.hide {
+            transform: scale(2);
+        }
 
         .spinner {
-            width: 16vw;
+            width: 20vw;
             aspect-ratio: 1 / 1;
             border-top: 1vh solid #fff;
             border-radius: 50%;
-            animation: spin 1.5s linear infinite;
+            animation: elastic-spin 1.5s cubic-bezier(0.68,-0.55,0.27,1.55) infinite;
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .bouncer {
+            display: flex;
+            gap: 2vw;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .bouncer div {
+            width: 3.5vw;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            background: #fff;
+            animation: bounce 0.6s infinite alternate;
+        }
+        .bouncer div:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .bouncer div:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        .mode {
+            margin:0;
+            width: 100vw;
+            height: 100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            transition: all 0.5s ease-in-out;
         }
 
         img {
@@ -158,6 +185,28 @@
             pointer-events: none;
         }
 
+        .clock-digital, .chrono-digital, .timer-digital {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            font-family: monospace;
+            transform: translate(-50%, -50%);
+            color: #255240;
+            text-shadow: 0 2px 2px rgba(0,0,0,0.25);
+            pointer-events: none;
+        }
+
+        .hand, .clock-digital, .chrono-digital, .timer-digital, h2 {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .ms {
+            font-size: 0.35em;
+            vertical-align: bottom;
+            margin-left: 0.2em;
+            width: 0.5vw;
+        }
+
         .hand {
             position: absolute;
             left: 50%;
@@ -166,7 +215,6 @@
             border-radius: 4px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.25);
         }
-
         .hand.hour {
             width: 1.2%;
             height: 20%;
@@ -197,77 +245,38 @@
             transition: all 0.5s ease-in-out;
             z-index: 9;
         }
-
         .Button:hover {
             background-color:rgba(255,255,255,0.1);
             border-color:rgba(255,255,255,0.5);
             transform: translateX(0.4vw);
         }
-
         .Button.Clock.ToggleButton {
             right: 22vw;
             width: 13vw;
         }
-
         .Button.Clock.SecondsButton {
             right:0;
             width: 20vw;
         }
-
         .Button.Chrono.Freeze {
             right: 30vw;
             width: 15vw;
         }
-
         .Button.Chrono.Start-Stop {
             right: 15vw;
             width: 13vw;
         }
-
         .Button.Chrono.Reset {
             right: 0;
             width: 13vw;
         }
-
-        .Button.Timer.Start-Stop {
+        .Button.Timer.First {
             right: 15vw;
             width: 13vw;
         }
-
-        .Button.Timer.Reset {
+        .Button.Timer.Second {
             right: 0;
             width: 13vw;
-        }
-
-        .clock-digital, .chrono-digital, .timer-digital {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            font-family: monospace;
-            transform: translate(-50%, -50%);
-            color: #255240;
-            text-shadow: 0 2px 2px rgba(0,0,0,0.25);
-            pointer-events: none;
-        }
-
-        .hand, .clock-digital, .chrono-digital, .timer-digital, h2 {
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .ms {
-            font-size: 0.35em;
-            vertical-align: bottom;
-            margin-left: 0.2em;
-            width: 0.5vw;
-        }
-
-        .hide {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .show {
-            opacity: 1;
         }
 
         .sidebar {
@@ -275,6 +284,7 @@
             top: 0;
             left: 0;
             width: 15vw;
+            min-width: 200px;
             height: 100%;
             background: rgba(37, 82, 64, 0.9);
             display: flex;
@@ -285,15 +295,17 @@
             z-index: 10;
             align-items: stretch;
             transform: translateX(-100%);
+            overflow-y: auto;
+            overflow-x: hidden;
+            box-sizing: border-box;
         }
-
         .sidebar-separator {
             height: 1px;
+            flex-shrink: 0;
             background-color: rgba(255,255,255,0.5);
             margin: 0.5em 0;
             width: 100%;
         }
-
         .sidebar button {
             width: 100%;
             padding: 1em;
@@ -304,17 +316,16 @@
             background: transparent;
             cursor: pointer;
             transition: all 0.5s ease-in-out;
+            flex-shrink: 0;
         }
         .sidebar button:hover {
             background: rgba(255,255,255,0.1);
             border-color:rgba(255,255,255,0.5);
             transform: translateX(0.4vw);
         }
-
         .sidebar.open {
             transform: translateX(0);
         }
-
         .sidebar-toggle, .fullscreen-toggle {
             position: fixed;
             z-index: 20;
@@ -327,41 +338,16 @@
             border-radius: 4px;
             transition: all 0.5s ease-in-out;
         }
-
         .sidebar-toggle:hover, .fullscreen-toggle:hover {
             background-color:#427e66;
         }
-
         .sidebar-toggle {
             top: 3vh;
             left: 1.5vw;
         }
-
         .fullscreen-toggle {
             bottom: 3vh;
             right: 1.5vw;
-        }
-
-        .mode {
-            transition: all 0.5s ease-in-out;
-        }
-        .mode.show {
-            visibility: visible;
-            pointer-events:all;
-        }
-        .mode.hide {
-            visibility: hidden;
-            pointer-events:none;
-        }
-
-        footer {
-            text-align: center;
-            padding: 1em;
-            color: #fff;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            font-size: 1.1vw;
         }
 
         .mode.credits, .mode.problem, .mode.building {
@@ -385,6 +371,49 @@
         }
         .mode.credits a:hover {
             text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1em;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 1.1vw;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width:0.7vw;
+            height: auto;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.5);
+            border-radius: 10rem;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.6);
+        }
+
+        .hide {
+            opacity: 0;
+            pointer-events:none;
+        }
+        .show {
+            opacity: 1;
+            pointer-events:all;
+        }
+
+        @keyframes bounce {
+            to { transform: translateY(-1vh); opacity: 0.5; }
+        }
+        @keyframes elastic-spin {
+            0% { transform: rotate(0deg); }
+            60% { transform: rotate(300deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
     <script>
@@ -743,10 +772,9 @@
 
             window.addEventListener("load", () => {
                 const loader = document.getElementById("loader");
-
                 setTimeout(() => {
                     setVisibility(loader, false);
-                }, 500);
+                }, 1000);
             });
 
             return { toggle, selectMode };
