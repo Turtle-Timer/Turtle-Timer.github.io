@@ -264,7 +264,7 @@ img {
     right: 1.5vw;
 }
 
-.mode.credits, .mode.problem, .mode.building {
+.mode.credits, .mode.problem, .mode.building, .mode.notfound {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -274,7 +274,7 @@ img {
     flex-direction:column;
     font-size: 3vw;
 }
-.mode.credits p, .mode.problem p, .mode.building p {
+.mode.credits p, .mode.problem p, .mode.building p, .mode.notfound p {
     margin: 0.2vh;
     color: #fff;
     width: 70%;
