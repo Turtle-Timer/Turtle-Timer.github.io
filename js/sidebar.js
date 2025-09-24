@@ -25,25 +25,6 @@ export const Sidebar = (() => {
             history.pushState({ mode }, "", `/${mode}`);
         }
     }
-
-    function init() {
-        const lastMode = localStorage.getItem("lastMode") || "clock";
-        selectMode(lastMode);
-
-        window.addEventListener("resize", () => {
-            if (sidebar.classList.contains("open")) toggle();
-        });
-
-        window.addEventListener("load", () => {
-            const loader = document.getElementById("loader");
-            setTimeout(() => setVisibility(loader, false), 1000);
-        });
-
-        window.addEventListener("popstate", (event) => {
-            const previousMode = event.state?.mode || "clock";
-            selectMode(previousMode);
-        });
-    }
     
     function init() {
         const lastMode = localStorage.getItem("lastMode") || "clock";
@@ -60,7 +41,6 @@ export const Sidebar = (() => {
 
         window.addEventListener("popstate", (event) => {
             const previousMode = event.state?.mode || "clock";
-            console.log(previousMode);
             localStorage.setItem("lastMode", previousMode);
             selectMode(previousMode, true);
         });
