@@ -13,14 +13,17 @@ export const Sidebar = (() => {
             : "1.5vw";
     }
 
-    function selectMode(mode) {
+    function selectMode(mode, skipHistory = false) {
         if (sidebar.classList.contains("open")) toggle();
         document.querySelectorAll('.mode').forEach(m => setVisibility(m,false));
         const el = document.getElementById("mode-" + mode);
         setVisibility(el, true);
-        if (mode !== "problem") localStorage.setItem("lastMode", mode);
+        localStorage.setItem("lastMode", mode);
         setVisibility(legalcredits, mode === "credits");
-        history.pushState({ mode }, "", `/${mode}`);
+
+        if (!skipHistory) {
+            history.pushState({ mode }, "", `/${mode}`);
+        }
     }
 
     function init() {
@@ -39,6 +42,25 @@ export const Sidebar = (() => {
         window.addEventListener("popstate", (event) => {
             const previousMode = event.state?.mode || "clock";
             selectMode(previousMode);
+        });
+    }
+    
+    function init() {
+        const lastMode = localStorage.getItem("lastMode") || "clock";
+        selectMode(lastMode, true);
+
+        window.addEventListener("resize", () => {
+            if (sidebar.classList.contains("open")) toggle();
+        });
+
+        window.addEventListener("load", () => {
+            const loader = document.getElementById("loader");
+            setTimeout(() => setVisibility(loader, false), 1000);
+        });
+
+        window.addEventListener("popstate", (event) => {
+            const previousMode = event.state?.mode || "clock";
+            selectMode(previousMode, true);
         });
     }
 
