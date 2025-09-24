@@ -60,6 +60,7 @@ export const Sidebar = (() => {
 
         window.addEventListener("popstate", (event) => {
             const previousMode = event.state?.mode || "clock";
+            console.log(previousMode);
             localStorage.setItem("lastMode", previousMode);
             selectMode(previousMode, true);
         });
@@ -67,4 +68,3 @@ export const Sidebar = (() => {
 
     return { toggle, selectMode, init };
 })();
-
