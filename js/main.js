@@ -5,14 +5,6 @@ import { Timer } from './timer.js';
 import { Sidebar } from './sidebar.js';
 import { toggleFullScreen } from './helpers.js';
 
-window.addEventListener('DOMContentLoaded', () => {
-    Clock.init();
-    Chrono.init();
-    Timer.init();
-    Sidebar.init();
-});
-
-
 // ----------------- Clock Buttons -----------------
 document.getElementById('SecondsButton').addEventListener('click', () => Clock.displaySeconds());
 document.getElementById('ToggleButton').addEventListener('click', () => Clock.toggleType());
@@ -70,6 +62,10 @@ window.addEventListener("load", () => {
 
 // ----------------- Sidebar Init -----------------
 window.addEventListener("DOMContentLoaded", () => {
+    Clock.init();
+    Chrono.init();
+    Timer.init();
+    Sidebar.init();
     const params = new URLSearchParams(window.location.search);
     let path = params.get("path");
 
@@ -90,4 +86,3 @@ window.addEventListener("DOMContentLoaded", () => {
 
     Sidebar.selectMode(mode, true);
 });
-
