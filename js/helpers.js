@@ -3,11 +3,9 @@ export function setVisibility(el, show) {
     if (show) {
         el.classList.add("show");
         el.classList.remove("hide");
-        el.style.display = "flex";
     } else {
         el.classList.add("hide");
         el.classList.remove("show");
-        el.style.display = "none";
     }
 }
 
@@ -23,3 +21,4 @@ export function toggleFullScreen() {
         document.exitFullscreen();
     }
 }
+
