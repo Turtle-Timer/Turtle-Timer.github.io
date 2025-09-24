@@ -20,6 +20,7 @@ export const Sidebar = (() => {
         setVisibility(el, true);
         if (mode !== "problem") localStorage.setItem("lastMode", mode);
         setVisibility(legalcredits, mode === "credits");
+        history.pushState({ mode }, "", `/${mode}`);
     }
 
     function init() {
@@ -33,6 +34,11 @@ export const Sidebar = (() => {
         window.addEventListener("load", () => {
             const loader = document.getElementById("loader");
             setTimeout(() => setVisibility(loader, false), 1000);
+        });
+
+        window.addEventListener("popstate", (event) => {
+            const previousMode = event.state?.mode || "clock";
+            selectMode(previousMode);
         });
     }
 
