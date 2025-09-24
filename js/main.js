@@ -70,14 +70,15 @@ window.addEventListener("load", () => {
 
 // ----------------- Sidebar Init -----------------
 window.addEventListener("DOMContentLoaded", () => {
-    Sidebar.init();
-});
-
-window.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const path = params.get("path");
 
-    const mode = path.replace("/", "") || "clock";
-    history.pushState({ mode }, "", path);
+    if (path) {
+        const mode = path.replace("/", "") || "clock";
+        history.replaceState({ mode }, "", path);
+    } else {
+        const defaultMode = "clock";
+        history.replaceState({ mode: defaultMode }, "", `/${defaultMode}`);
+    }
+    Sidebar.init();
 });
-
