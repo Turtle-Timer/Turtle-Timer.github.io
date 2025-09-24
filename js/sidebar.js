@@ -60,9 +60,11 @@ export const Sidebar = (() => {
 
         window.addEventListener("popstate", (event) => {
             const previousMode = event.state?.mode || "clock";
+            localStorage.setItem("lastMode", previousMode);
             selectMode(previousMode, true);
         });
     }
 
     return { toggle, selectMode, init };
 })();
+
