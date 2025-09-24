@@ -78,7 +78,8 @@ window.addEventListener("DOMContentLoaded", () => {
         history.replaceState({ mode }, "", path);
     } else {
         const defaultMode = "clock";
-        history.replaceState({ mode: defaultMode }, "", `/${defaultMode}`);
+        history.replaceState({ defaultMode }, "", `/${defaultMode}`);
     }
     Sidebar.init();
 });
+
