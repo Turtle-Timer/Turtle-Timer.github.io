@@ -44,7 +44,7 @@ document.addEventListener("fullscreenchange", () => {
     }
 });
 
-/* document.addEventListener("contextmenu", (e) => e.preventDefault());
+document.addEventListener("contextmenu", (e) => e.preventDefault());
 
 document.addEventListener("keydown", (e) => {
     if (
@@ -57,7 +57,7 @@ document.addEventListener("keydown", (e) => {
         e.preventDefault();
         Sidebar.selectMode("problem");
     }
-}); */
+});
 
 // ----------------- Loader -----------------
 window.addEventListener("load", () => {
@@ -90,3 +90,4 @@ window.addEventListener("DOMContentLoaded", () => {
 
     Sidebar.selectMode(mode, true);
 });
+
