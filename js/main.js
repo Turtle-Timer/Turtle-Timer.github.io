@@ -74,10 +74,6 @@ window.addEventListener("DOMContentLoaded", () => {
         // Cas redirection depuis 404.html
         mode = path.replace("/", "") || "clock";
         history.replaceState({ mode }, "", path);
-    } else if (window.location.pathname !== "/" && window.location.pathname !== "/index.html") {
-        // Cas URL propre déjà chargée (ex: /chrono, /credits)
-        mode = window.location.pathname.replace("/", "") || "clock";
-        history.replaceState({ mode }, "", window.location.pathname);
     } else {
         // Sinon, on récupère le dernier mode stocké ou défaut
         mode = localStorage.getItem("lastMode") || "clock";
@@ -86,3 +82,4 @@ window.addEventListener("DOMContentLoaded", () => {
 
     Sidebar.selectMode(mode, true);
 });
+
