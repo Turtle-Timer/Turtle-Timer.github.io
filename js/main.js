@@ -72,3 +72,11 @@ window.addEventListener("load", () => {
 window.addEventListener("DOMContentLoaded", () => {
     Sidebar.init();
 });
+
+window.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const path = params.get("path");
+
+    const mode = path.replace("/", "") || "clock";
+    history.replaceState({ mode }, "", path);
+});
