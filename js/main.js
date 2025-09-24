@@ -78,5 +78,6 @@ window.addEventListener("DOMContentLoaded", () => {
     const path = params.get("path");
 
     const mode = path.replace("/", "") || "clock";
-    history.replaceState({ mode }, "", path);
+    history.pushState({ mode }, "", path);
 });
+
