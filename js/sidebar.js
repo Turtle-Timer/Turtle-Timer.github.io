@@ -17,6 +17,10 @@ export const Sidebar = (() => {
         if (sidebar.classList.contains("open")) toggle();
         document.querySelectorAll('.mode').forEach(m => setVisibility(m,false));
         const el = document.getElementById("mode-" + mode);
+        if (!el) {
+            el = document.getElementById("mode-notfound");
+            mode = "notfound";
+        }
         setVisibility(el, true);
         localStorage.setItem("lastMode", mode);
         setVisibility(legalcredits, mode === "credits");
