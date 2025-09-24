@@ -16,7 +16,7 @@ export const Sidebar = (() => {
     function selectMode(mode, skipHistory = false) {
         if (sidebar.classList.contains("open")) toggle();
         document.querySelectorAll('.mode').forEach(m => setVisibility(m,false));
-        const el = document.getElementById("mode-" + mode);
+        let el = document.getElementById("mode-" + mode);
         if (el === null) {
             mode = "notfound";
             el = document.getElementById("mode-notfound");
@@ -52,5 +52,6 @@ export const Sidebar = (() => {
 
     return { toggle, selectMode, init };
 })();
+
 
 
