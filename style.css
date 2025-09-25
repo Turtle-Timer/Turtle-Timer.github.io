@@ -415,12 +415,12 @@ footer {
 }
 .show {
     opacity: 1;
-    pointer-events:all;
-    user-select: text;
+    pointer-events:visible;
+    user-select: none;
 }
 .show * {
-    pointer-events:all;
-    user-select: text;
+    pointer-events:visible;
+    user-select: none;
 }
 
 @keyframes bounce {
