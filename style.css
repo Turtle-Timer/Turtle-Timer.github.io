@@ -409,8 +409,16 @@ footer {
     pointer-events:none;
     user-select: none;
 }
+.hide * {
+    pointer-events:none;
+    user-select: none;
+}
 .show {
     opacity: 1;
+    pointer-events:all;
+    user-select: text;
+}
+.show * {
     pointer-events:all;
     user-select: text;
 }
