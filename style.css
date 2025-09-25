@@ -6,6 +6,7 @@ body {
     background-size: cover;
     transition:all 0.5s ease-in-out;
     overflow: hidden;
+    cursor: default;
 }
 
 .loader {
@@ -72,7 +73,7 @@ img {
     top: 50vh;
     left: 50vw;
     transform: translate(-50%, -50%);
-    width: 75vw;
+    width: 60vw;
     aspect-ratio: 7 / 3;
 }
 
@@ -114,8 +115,14 @@ img {
     transition: opacity 0.5s ease-in-out;
 }
 
-.ms {
-    font-size: 0.35em;
+.ms-chrono {
+    font-size: 4vw;
+    vertical-align: bottom;
+    margin-left: 0.2em;
+    width: 0.5vw;
+}
+.ms-highlight {
+    font-size: 1vw;
     vertical-align: bottom;
     margin-left: 0.2em;
     width: 0.5vw;
@@ -194,6 +201,38 @@ img {
     z-index: 4;
 }
 
+.chrono-highlights {
+    position: absolute;
+    top: 25%;
+    right: 1vw;
+    transform: none;
+    z-index: 5;
+    display: flex;
+    flex-direction: column-reverse;
+    font-family: monospace;
+    font-size: 1.3vw;
+    color: #fff;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.25);
+    height: 50vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: content-box;
+    padding-bottom: 0.5em;
+    gap: 0.5em;
+}
+.highlight {
+    margin: 0;
+    padding: 0.5em 1em;
+    border-radius: 1vw;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.5);
+    transition: all 0.5s ease-in-out;
+}
+.highlight:hover {
+    background: rgba(141, 0, 0, 0.75);
+    transform: translateY(0.4vh);
+}
+
 .Button {
     position:fixed;
     top:0;
@@ -219,6 +258,10 @@ img {
 }
 .Button.Clock.SecondsButton {
     right:0;
+    width: 20vw;
+}
+.Button.Chrono.Highlights {
+    right: 47vw;
     width: 20vw;
 }
 .Button.Chrono.Freeze {
@@ -346,18 +389,18 @@ footer {
     font-size: 1.1vw;
 }
 
-.sidebar::-webkit-scrollbar {
+.sidebar::-webkit-scrollbar, .chrono-highlights::-webkit-scrollbar {
     width:0.7vw;
     height: auto;
 }
-.sidebar::-webkit-scrollbar-track {
+.sidebar::-webkit-scrollbar-track, .chrono-highlights::-webkit-scrollbar-track {
     background: rgba(255,255,255,0.1);
 }
-.sidebar::-webkit-scrollbar-thumb {
+.sidebar::-webkit-scrollbar-thumb, .chrono-highlights::-webkit-scrollbar-thumb {
     background: rgba(255,255,255,0.5);
     border-radius: 10rem;
 }
-.sidebar::-webkit-scrollbar-thumb:hover {
+.sidebar::-webkit-scrollbar-thumb:hover, .chrono-highlights::-webkit-scrollbar-thumb:hover {
     background: rgba(255,255,255,0.6);
 }
 
