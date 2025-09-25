@@ -28,11 +28,15 @@ export const Sidebar = (() => {
         if (!skipHistory) {
             history.pushState({ mode }, "", `/${mode}`);
         }
+
+        document.title = "Turtle Timer - " + mode.toUpperCase() + " 🐢";
     }
     
     function init() {
         const lastMode = localStorage.getItem("lastMode") || "clock";
         selectMode(lastMode, true);
+
+        document.title = "Turtle Timer - " + lastMode.toUpperCase() + " 🐢";
 
         window.addEventListener("resize", () => {
             if (sidebar.classList.contains("open")) toggle();
@@ -47,11 +51,9 @@ export const Sidebar = (() => {
             const previousMode = event.state?.mode || "clock";
             localStorage.setItem("lastMode", previousMode);
             selectMode(previousMode, true);
+            document.title = "Turtle Timer - " + previousMode.toUpperCase() + " 🐢";
         });
     }
 
     return { toggle, selectMode, init };
 })();
-
-
-
