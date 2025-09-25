@@ -7,6 +7,7 @@ const $digital = document.getElementById('clock-digital');
 const $cadran = document.getElementById('clock-cadran');
 const $horloge = document.getElementById('clock-horloge');
 const $mode = document.getElementById('mode-clock');
+const $point = document.getElementById('point');
 
 let showSeconds = false;
 
@@ -22,6 +23,7 @@ export const Clock = (() => {
             setVisibility($hour,false);
             setVisibility($minute,false);
             setVisibility($second,false);
+            setVisibility($point,false);
             setTimeout(() => { setVisibility($cadran,true); setVisibility($horloge,false); }, 400);
             setTimeout(() => { setVisibility($digital,true); }, 1000);
         } else {
@@ -29,7 +31,7 @@ export const Clock = (() => {
             btn.innerHTML = "Numérique";
             setVisibility($digital,false);
             setTimeout(() => { setVisibility($cadran,false); setVisibility($horloge,true); }, 400);
-            setTimeout(() => { setVisibility($hour,true); setVisibility($minute,true); setVisibility($second,true); }, 1000);
+            setTimeout(() => { setVisibility($hour,true); setVisibility($minute,true); setVisibility($second,true);  setVisibility($point,true); }, 1000);
         }
 
         setTimeout(() => btn.disabled = false, 2000);
@@ -107,6 +109,7 @@ export const Clock = (() => {
             setVisibility($horloge, true);
             setVisibility($hour, true);
             setVisibility($minute, true);
+            setVisibility($point, true);
             if (showSeconds) setVisibility($second, true);
         } else {
             setVisibility($cadran, true);
