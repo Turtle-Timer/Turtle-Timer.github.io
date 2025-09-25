@@ -14,8 +14,9 @@ export const Chrono = (() => {
     let timeFreezed;
     let startTime;
     let elapsed;
+    let intervalTitle;
 
-    function getTime() {
+    function getTime(title=false) {
         elapsed = Date.now() - startTime;
         const totalSeconds = Math.floor(elapsed / 1000);
         const hh = Math.floor(totalSeconds / 3600);
@@ -23,6 +24,7 @@ export const Chrono = (() => {
         const ss = totalSeconds % 60;
         let ms = elapsed % 1000;
         while (String(ms).length < 3) ms = "0" + String(ms);
+        if (title) return `Turtle Timer - ${pad(hh)}:${pad(mm)}:${pad(ss)} 🐢`;
         return `${pad(hh)}:${pad(mm)}:${pad(ss)}<span class='ms'>${pad(ms)}</span>`;
     }
 
@@ -37,6 +39,7 @@ export const Chrono = (() => {
             isrunning = false;
             if (pending) removePending = Date.now();
             if (freezed) timeFreezed = getTime();
+            document.title = getTime(true);
         } else {
             $startStop.innerHTML = "Arretter";
             isrunning = true;
@@ -44,6 +47,15 @@ export const Chrono = (() => {
                 startTime = Date.now();
                 pending = true;
             } else startTime += Date.now() - removePending;
+            document.title = getTime(true);
+            clearInterval(intervalTitle);
+            intervalTitle = setInterval(() => {
+                if (isrunning) {
+                    if ($mode.classList.contains("show")) {
+                        document.title = getTime(true);
+                    }
+                }
+            }, 250);
         }
     }
 
@@ -51,11 +63,13 @@ export const Chrono = (() => {
         $startStop.innerHTML = "Démarrer";
         isrunning = false;
         pending = false;
+        clearInterval(intervalTitle);
         if (freezed) timeFreezed = `00:00:00<span class='ms'>000</span>`;
         else {
             $digital.innerHTML = `00:00:00<span class='ms'>000</span>`;
             timeFreezed = `00:00:00<span class='ms'>000</span>`;
         }
+        document.title = 'Turtle Timer - CHRONO 🐢';
     }
 
     function freezeScreen() {
@@ -71,7 +85,7 @@ export const Chrono = (() => {
 
     function loop() {
         if ($mode.classList.contains("show") && isrunning && !freezed) update();
-        requestAnimationFrame(loop); 
+        requestAnimationFrame(loop);
     }
 
     function init() {
