@@ -77,12 +77,12 @@ export const Clock = (() => {
 
         if (showSeconds) {
             if ($hour.classList.contains("show") && $second.classList.contains("hide")) setVisibility($second,true);
-            $digital.style.fontSize = "12vw";
+            $digital.style.fontSize = "10.5vw";
             $digital.innerHTML = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
             if ($digital.classList.contains("show") && $horloge.classList.contains("show")) setVisibility($digital,false);
         } else {
             if ($second.classList.contains("show")) setVisibility($second,false);
-            $digital.style.fontSize = "20vw";
+            $digital.style.fontSize = "17vw";
             $digital.innerHTML = `${pad(hh)}:${pad(mm)}`;
             if ($digital.classList.contains("show") && $horloge.classList.contains("show")) setVisibility($digital,false);
         }
