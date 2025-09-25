@@ -11,6 +11,7 @@ document.getElementById('SecondsButton').addEventListener('click', () => Clock.d
 document.getElementById('ToggleButton').addEventListener('click', () => Clock.toggleType());
 
 // ----------------- Chrono Buttons -----------------
+document.getElementById('HighlightsButton').addEventListener('click', () => Chrono.saveTime());
 document.getElementById('FreezeButton').addEventListener('click', () => Chrono.freezeScreen());
 document.getElementById('StartStopButton').addEventListener('click', () => Chrono.startStop());
 document.getElementById('ResetButton').addEventListener('click', () => Chrono.reset());
