@@ -38,7 +38,7 @@ body {
 .bouncer {
     display: flex;
     gap: 2vw;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -104,7 +104,7 @@ img {
 }
 
 .clock-digital, .chrono-digital, .timer-digital {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     font-family: monospace;
@@ -269,20 +269,20 @@ img {
     width: 15vw;
 }
 .Button.Chrono.Highlights {
-    right: 53vw;
+    right: 58vw;
     width: 20vw;
 }
 .Button.Chrono.Freeze {
-    right: 34vw;
+    right: 39vw;
     width: 17vw;
 }
 .Button.Chrono.Start-Stop {
-    right: 17vw;
+    right: 22vw;
     width: 15vw;
 }
 .Button.Chrono.Reset {
     right: 0;
-    width: 15vw;
+    width: 20vw;
 }
 .Button.Timer.First {
     right: 15vw;
@@ -413,6 +413,48 @@ img {
     display: block;
     transition: transform 0.1s linear;
 }
+.icon.credits {
+    display: block;
+    font-weight: bold;
+    background: linear-gradient(
+        270deg,
+        #C79870,
+        #4CAF7D,
+        #7DD9A7,
+        #4DBCE9,
+        #6FE7F0,
+        #F5D46B,
+        #C79870,
+        #4CAF7D
+    );
+    background-size: 600% 600%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow 10s linear infinite;
+}
+.icon.credits::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.4vh;
+    width: 100%;
+    height: 0.6vh;
+    border-radius: 4px;
+    background: linear-gradient(
+        270deg,
+        #C79870,
+        #4CAF7D,
+        #7DD9A7,
+        #4DBCE9,
+        #6FE7F0,
+        #F5D46B,
+        #C79870,
+        #4CAF7D
+    );
+    background-size: 600% 600%;
+    animation: rainbow 10s linear infinite;
+}
 
 footer {
     text-align: center;
@@ -473,4 +515,8 @@ footer {
 @keyframes pulse {
     from { transform: scale(1); }
     to   { transform: scale(1.2); }
+}
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
