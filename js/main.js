@@ -4,6 +4,7 @@ import { Chrono } from './chrono.js';
 import { Timer } from './timer.js';
 import { Sidebar } from './sidebar.js';
 import { toggleFullScreen } from './helpers.js';
+import { notFound } from './notfound.js';
 
 
 // ----------------- Clock Buttons -----------------
@@ -11,6 +12,7 @@ document.getElementById('SecondsButton').addEventListener('click', () => Clock.d
 document.getElementById('ToggleButton').addEventListener('click', () => Clock.toggleType());
 
 // ----------------- Chrono Buttons -----------------
+document.getElementById('ClearHighlightsButton').addEventListener('click', () => Chrono.clearAll());
 document.getElementById('HighlightsButton').addEventListener('click', () => Chrono.saveTime());
 document.getElementById('FreezeButton').addEventListener('click', () => Chrono.freezeScreen());
 document.getElementById('StartStopButton').addEventListener('click', () => Chrono.startStop());
@@ -23,6 +25,7 @@ document.getElementById('clock-button').addEventListener('click', () => Sidebar.
 document.getElementById('chrono-button').addEventListener('click', () => Sidebar.selectMode('chrono'));
 document.getElementById('building-button').addEventListener('click', () => Sidebar.selectMode('building'));
 document.getElementById('credits-button').addEventListener('click', () => Sidebar.selectMode('credits'));
+// document.getElementById('timer-button').addEventListener('click', () => Sidebar.selectMode('timer'));
 document.getElementById('sidebar-toggle').addEventListener('click', () => Sidebar.toggle());
 
 // ----------------- Fullscreen -----------------
