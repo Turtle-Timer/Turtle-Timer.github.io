@@ -263,21 +263,26 @@ img {
     right:0;
     width: 20vw;
 }
+.Button.Chrono.ClearHighlights {
+    top: 75vh;
+    right: 0;
+    width: 15vw;
+}
 .Button.Chrono.Highlights {
-    right: 47vw;
+    right: 53vw;
     width: 20vw;
 }
 .Button.Chrono.Freeze {
-    right: 30vw;
-    width: 15vw;
+    right: 34vw;
+    width: 17vw;
 }
 .Button.Chrono.Start-Stop {
-    right: 15vw;
-    width: 13vw;
+    right: 17vw;
+    width: 15vw;
 }
 .Button.Chrono.Reset {
     right: 0;
-    width: 13vw;
+    width: 15vw;
 }
 .Button.Timer.First {
     right: 15vw;
@@ -315,7 +320,7 @@ img {
     margin: 0.5em 0;
     width: 100%;
 }
-.sidebar button {
+.sidebar-button {
     width: 100%;
     padding: 1em;
     border: 1px solid #fff;
@@ -327,10 +332,17 @@ img {
     transition: all 0.5s ease-in-out;
     flex-shrink: 0;
 }
-.sidebar button:hover {
+.sidebar-button:hover {
     background: rgba(255,255,255,0.1);
     border-color:rgba(255,255,255,0.5);
     transform: translateX(0.4vw);
+}
+.sidebar-button.active {
+    border-color: rgba(0, 255, 150, 1);
+}
+.sidebar-button.active:hover {
+    background: rgba(0, 255, 150, 0.15);
+    border-color: rgba(0, 255, 150, 0.7);
 }
 .sidebar.open {
     transform: translateX(0);
@@ -361,7 +373,7 @@ img {
 
 .mode.credits, .mode.problem, .mode.building, .mode.notfound {
     position: fixed;
-    top: 50%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -373,6 +385,7 @@ img {
     margin: 0.2vh;
     color: #fff;
     width: 70%;
+    margin: 0 auto;
 }
 .mode.credits a {
     color: #fff;
@@ -380,6 +393,25 @@ img {
 }
 .mode.credits a:hover {
     text-decoration: underline;
+}
+
+.icon {
+    font-size: 10vw;
+    position: fixed;
+    top: 70%;
+    margin: 0;
+    color: #fff;
+}
+.icon.building {
+    animation: spin 3s linear infinite;
+}
+.icon.problem {
+    display: block;
+    animation: pulse 1s infinite alternate ease-in-out;
+}
+.icon.notfound {
+    display: block;
+    transition: transform 0.1s linear;
 }
 
 footer {
@@ -433,4 +465,12 @@ footer {
     0% { transform: rotate(0deg); }
     60% { transform: rotate(300deg); }
     100% { transform: rotate(360deg); }
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+@keyframes pulse {
+    from { transform: scale(1); }
+    to   { transform: scale(1.2); }
 }
