@@ -66,27 +66,37 @@ export const Chrono = (() => {
     }
 
     function reset() {
-        $resetButton.innerHTML = "Réinitialisation <i class='fa-solid fa-spinner'></i>";
-        $resetButton.disabled = true;
-        $startStopButton.disabled = true;
-        $startStopButton.innerHTML = "Réinitialisation <i class='fa-solid fa-spinner'></i>";
-        isrunning = false;
-        pending = false;
-        clearInterval(intervalTitle);
-        if (freezed) timeFreezed = `00:00:00<span class='ms-chrono'>000</span>`;
-        else {
-            $digital.innerHTML = `00:00:00<span class='ms-chrono'>000</span>`;
-            timeFreezed = `00:00:00<span class='ms-chrono'>000</span>`;
-        }
-        if (highlights.length > 0) clearAll();
-        document.title = 'Turtle Timer - CHRONO 🐢';
+        if (isrunning === true || pending === true) {
+            $resetButton.innerHTML = "Réinitialisation <i class='fa-solid fa-spinner'></i>";
+            $resetButton.disabled = true;
+            $startStopButton.disabled = true;
+            $startStopButton.innerHTML = "Réinitialisation <i class='fa-solid fa-spinner'></i>";
+            isrunning = false;
+            pending = false;
+            clearInterval(intervalTitle);
+            if (freezed) timeFreezed = `00:00:00<span class='ms-chrono'>000</span>`;
+            else {
+                $digital.innerHTML = `00:00:00<span class='ms-chrono'>000</span>`;
+                timeFreezed = `00:00:00<span class='ms-chrono'>000</span>`;
+            }
+            if (highlights.length > 0) clearAll();
+            document.title = 'Turtle Timer - CHRONO 🐢';
 
-        setTimeout(() => {
-            $resetButton.innerHTML = "Réinitialiser <i class='fa-solid fa-rotate-left'></i>";
-            $resetButton.disabled = false;
-            $startStopButton.disabled = false;
-            $startStopButton.innerHTML = "Démarrer <i class='fa-solid fa-play'></i>";
-        }, 1000);
+            setTimeout(() => {
+                $resetButton.innerHTML = "Réinitialiser <i class='fa-solid fa-rotate-left'></i>";
+                $resetButton.disabled = false;
+                $startStopButton.disabled = false;
+                $startStopButton.innerHTML = "Démarrer <i class='fa-solid fa-play'></i>";
+            }, 1000);
+        } else {
+            $resetButton.innerHTML = "Chrono non démarré <i class='fa-solid fa-triangle-exclamation'></i>";
+            $resetButton.disabled = true;
+            
+            setTimeout(() => {
+                $resetButton.innerHTML = "Réinitialiser <i class='fa-solid fa-rotate-left'></i>";
+                $resetButton.disabled = false;
+            }, 1000);
+        }
     }
 
     function freezeScreen() {
