@@ -8,18 +8,23 @@ const $cadran = document.getElementById('clock-cadran');
 const $horloge = document.getElementById('clock-horloge');
 const $mode = document.getElementById('mode-clock');
 const $point = document.getElementById('point');
+const $toggleButton = document.getElementById('ToggleButton');
+const $secondsButton = document.getElementById('SecondsButton');
+const btnType = document.getElementById('ToggleButton');
+const btnSec = document.getElementById('SecondsButton');
 
 let showSeconds = false;
 
 export const Clock = (() => {
 
     function toggleType() {
-        const btn = document.getElementById('ToggleButton');
-        btn.disabled = true;
+        const clockType = localStorage.getItem("clock-type") || "Numérique";
+        $toggleButton.disabled = true;
+        $toggleButton.innerHTML = "Cooldown <i class='fa-solid fa-spinner'></i>";
 
-        if (btn.innerHTML === "Numérique") {
-            btn.innerHTML = "Analogique";
+        if (clockType === "Analogique") {
             localStorage.setItem("clock-type", "Numérique");
+
             setVisibility($hour,false);
             setVisibility($minute,false);
             setVisibility($second,false);
@@ -28,20 +33,19 @@ export const Clock = (() => {
             setTimeout(() => { setVisibility($digital,true); }, 1000);
         } else {
             localStorage.setItem("clock-type", "Analogique");
-            btn.innerHTML = "Numérique";
+
             setVisibility($digital,false);
             setTimeout(() => { setVisibility($cadran,false); setVisibility($horloge,true); }, 400);
-            setTimeout(() => { setVisibility($hour,true); setVisibility($minute,true); setVisibility($second,true);  setVisibility($point,true); }, 1000);
+            setTimeout(() => { setVisibility($hour,true); setVisibility($minute,true); setVisibility($second,true); setVisibility($point,true); }, 1000);
         }
 
-        setTimeout(() => btn.disabled = false, 2000);
+        setTimeout(() => { $toggleButton.disabled = false, 2000; $toggleButton.innerHTML = localStorage.getItem("clock-type") === "Analogique" ? "Numérique <i class='fa-solid fa-tv'></i>" : "Analogique <i class='fa-solid fa-clock'></i>"}, 1000);
     }
 
-    function displaySeconds() {
-        const btn = document.getElementById('SecondsButton');
-        btn.disabled = true;
 
-        btn.innerHTML = showSeconds ? "Afficher les secondes" : "Cacher les secondes";
+    function displaySeconds() {
+        $secondsButton.disabled = true;
+        $secondsButton.innerHTML = "Cooldown <i class='fa-solid fa-spinner'></i>";
 
         if ($digital.classList.contains("show")) {
             setVisibility($digital, false);
@@ -55,7 +59,7 @@ export const Clock = (() => {
             localStorage.setItem("display-seconds", showSeconds);
         }
 
-        setTimeout(() => btn.disabled = false, 1000);
+        setTimeout(() => {$secondsButton.disabled = false; $secondsButton.innerHTML = !showSeconds ? "Afficher les secondes <i class='fa-regular fa-eye'></i>" : "Cacher les secondes <i class='fa-regular fa-eye-slash'></i>";}, 1000);
     }
 
     function update() {
@@ -96,16 +100,14 @@ export const Clock = (() => {
     function init() {
         const clockType = localStorage.getItem("clock-type") || "Numérique";
         const displaySecondsLocalVar = localStorage.getItem("display-seconds") || "false";
-        const btnType = document.getElementById('ToggleButton');
-        const btnSec = document.getElementById('SecondsButton');
 
         if (displaySecondsLocalVar === "true") {
-            btnSec.innerHTML = "Cacher les secondes";
+            btnSec.innerHTML = "Cacher les secondes <i class='fa-regular fa-eye-slash'></i>";
             showSeconds = true;
         }
 
         if (clockType === "Analogique") {
-            btnType.innerHTML = "Numérique";
+            btnType.innerHTML = "Numérique <i class='fa-solid fa-tv'></i>";
             setVisibility($horloge, true);
             setVisibility($hour, true);
             setVisibility($minute, true);
