@@ -1,107 +1,128 @@
 <!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <title>Turtle Timer 🐢</title>
-</head>
-<body>
-    <!-- ---------------- Loading Page ---------------- -->
-    <div class="loader show" id="loader">
-        <div class="spinner" id="spinner"></div>
-        <div class="bouncer" id="bouncer">
-            <div id="bouncer-1"></div>
-            <div id="bouncer-2"></div>
-            <div id="bouncer-3"></div>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <link rel="stylesheet" href="style.css">
+        <title>Turtle Timer 🐢</title>
+    </head>
+    <body>
+        <!-- ---------------- Loading Page ---------------- -->
+        <div class="loader show" id="loader">
+            <div class="spinner" id="spinner"></div>
+            <div class="bouncer" id="bouncer">
+                <div id="bouncer-1"></div>
+                <div id="bouncer-2"></div>
+                <div id="bouncer-3"></div>
+            </div>
         </div>
-    </div>
 
-    <!-- ---------------- Clock Page ---------------- -->
-    <div class="mode clock hide" id="mode-clock">
-        <button class="Button Clock SecondsButton" id="SecondsButton">Afficher les secondes</button>
-        <button class="Button Clock ToggleButton" id="ToggleButton">Analogique</button>
+        <!-- ---------------- Clock Page ---------------- -->
+        <div class="mode clock hide" id="mode-clock">
+            <button class="Button Clock SecondsButton" id="SecondsButton">
+                Afficher les secondes <i class="fa-regular fa-eye"></i>
+            </button>
+            <button class="Button Clock ToggleButton" id="ToggleButton">
+                Analogique <i class="fa-solid fa-clock"></i>
+            </button>
 
-        <img class="cadran hide" id="clock-cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
-        <img class="horloge hide" id="clock-horloge" src="https://i.ibb.co/qv3d3zF/Horloge.png" alt="">
+            <img class="cadran hide" id="clock-cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+            <img class="horloge hide" id="clock-horloge" src="https://i.ibb.co/qv3d3zF/Horloge.png" alt="">
 
-        <div class="clock-components" id="clock-components">
-            <div class="hand second hide" id="second"></div>
-            <div class="hand minute hide" id="minute"></div>
-            <div class="hand hour hide" id="hour"></div>
-            <div class="point hide" id="point"></div>
-            <div class="clock-digital hide" id="clock-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+            <div class="clock-components" id="clock-components">
+                <div class="hand second hide" id="second"></div>
+                <div class="hand minute hide" id="minute"></div>
+                <div class="hand hour hide" id="hour"></div>
+                <div class="point hide" id="point"></div>
+                <div class="clock-digital hide" id="clock-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+            </div>
         </div>
-    </div>
 
-    <!-- ---------------- Chrono Page ---------------- -->
-    <div class="mode chrono hide" id="mode-chrono">
-        <button class="Button Chrono Highlights" id="HighlightsButton">Sauvegarder le temps</button>
-        <button class="Button Chrono Freeze" id="FreezeButton">Figer l'écran</button>
-        <button class="Button Chrono Start-Stop" id="StartStopButton">Démarrer</button>
-        <button class="Button Chrono Reset" id="ResetButton">Réinitialiser</button>
+        <!-- ---------------- Chrono Page ---------------- -->
+        <div class="mode chrono hide" id="mode-chrono">
+            <button class="Button Chrono Highlights" id="HighlightsButton">
+                Sauvegarder le temps <i class="fa-solid fa-bookmark"></i>
+            </button>
+            <button class="Button Chrono Freeze" id="FreezeButton">
+                Figer l'écran <i class="fa-regular fa-snowflake"></i>
+            </button>
+            <button class="Button Chrono Start-Stop" id="StartStopButton">
+                Démarrer <i class="fa-solid fa-play"></i>
+            </button>
+            <button class="Button Chrono Reset" id="ResetButton">
+                Réinitialiser <i class="fa-solid fa-rotate-left"></i>
+            </button>
+            <button class="Button Chrono ClearHighlights" id="ClearHighlightsButton">
+                Tout effacer <i class="fa-solid fa-trash-can"></i>
+            </button>
 
-        <img class="cadran" id="chrono-cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
-        
-        <div class="chrono-components" id="chrono-components">
-            <div class="chrono-digital" id="chrono-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+            <img class="cadran" id="chrono-cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+            
+            <div class="chrono-components" id="chrono-components">
+                <div class="chrono-digital" id="chrono-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+            </div>
+            <div class="chrono-highlights" id="chrono-highlights"></div>
         </div>
-        <div class="chrono-highlights" id="chrono-highlights">
+
+        <!-- ---------------- Timer Page ---------------- -->
+        <div class="mode timer hide" id="mode-timer">
+            <button class="Button Timer First" id="Button1">
+                Bouton 1 <i class="fa-solid fa-hourglass-start"></i>
+            </button>
+            <button class="Button Timer Second" id="Button2">
+                Bouton 2 <i class="fa-solid fa-hourglass-end"></i>
+            </button>
+
+            <img class="cadran" id="timer-cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
+
+            <div class="timer-components" id="timer-components">
+                <div class="timer-digital" id="timer-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+            </div>
         </div>
-    </div>
 
-    <!-- ---------------- Timer Page ---------------- -->
-    <div class="mode timer hide" id="mode-timer">
-        <button class="Button Timer First" id="Button1">Bouton 1</button>
-        <button class="Button Timer Second" id="Button2">Bouton 2</button>
-
-        <img class="cadran" id="timer-cadran" src="https://i.ibb.co/Xxh33tMG/Cadran.png" alt="">
-
-        <div class="timer-components" id="timer-components">
-            <div class="timer-digital" id="timer-digital" aria-live="polite" aria-atomic="true">--:--:--</div>
+        <!-- ---------------- Credits Page ---------------- -->
+        <div class="mode credits hide" id="mode-credits">
+            <p class="" id="credits-owner">Ce site internet est réalisé par : <span style="font-weight: bold;">TurtleSmile</span></p>
+            <p class="" id="credits-problem">Pour toute suggestion, demande ou remarque, merci de me contacter sur <a href="https://discord.gg/H26UBrEsTc" target="_blank">Discord</a></p>
         </div>
-    </div>
 
-    <!-- ---------------- Credits Page ---------------- -->
-    <div class="mode credits hide" id="mode-credits">
-        <p class="" id="credits-owner">Ce site internet est réalisé par : <span style="font-weight: bold;">TurtleSmile</span></p>
-        <p class="" id="credits-problem">Pour toute suggestion, demande ou remarque, merci de me contacter sur <a href="https://discord.gg/H26UBrEsTc" target="_blank">Discord</a></p>
-    </div>
+        <!-- ---------------- Problem Page ---------------- -->
+        <div class="mode problem hide" id="mode-problem">
+            <p id="credits-warning"><span style="font-weight: bold;">Vous ne pouvez pas faire ça, merci de respecter les droits d'auteur !</span></p>
+            <i class='fa-solid fa-triangle-exclamation icon problem'></i>
+        </div>
 
-    <!-- ---------------- Problem Page ---------------- -->
-    <div class="mode problem hide" id="mode-problem">
-        <p id="credits-warning"><span style="font-weight: bold;">Vous ne pouvez pas faire ça, merci de respecter les droits d'auteur !</span></p>
-    </div>
+        <!-- ---------------- Building Page ---------------- -->
+        <div class="mode building hide" id="mode-building">
+            <p id="credits-building"><span style="font-weight: bold;">Cette partie du site est en construction, merci de revenir plus tard !</span></p>
+            <i class="fa-solid fa-gear icon building"></i>
+        </div>
 
-    <!-- ---------------- Building Page ---------------- -->
-    <div class="mode building hide" id="mode-building">
-        <p id="credits-building"><span style="font-weight: bold;">Cette partie du site est en construction, merci de revenir plus tard !</span></p>
-    </div>
+        <!-- ---------------- Not Found Page ---------------- -->
+        <div class="mode notfound hide" id="mode-notfound">
+            <p id="credits-notfound"><span style="font-weight: bold;">La partie du site que vous cherchez n'existe pas !</span></p>
+            <i class="fa-solid fa-magnifying-glass icon notfound"></i>
+        </div>
 
-    <!-- ---------------- Not Found Page ---------------- -->
-    <div class="mode notfound hide" id="mode-notfound">
-        <p id="credits-notfound"><span style="font-weight: bold;">La partie du site que vous cherchez n'existe pas !</span></p>
-    </div>
+        <!-- ---------------- Sidebar & Buttons (Except Loading) ---------------- -->
+        <div class="sidebar" id="sidebar">
+            <button id="clock-button" class="sidebar-button">Horloge <i class="fa-solid fa-clock"></i></button>
+            <button id="chrono-button" class="sidebar-button">Chrono <i class="fa-solid fa-stopwatch"></i></button>
+            <button id="building-button" class="sidebar-button">En travaux <i class="fa-solid fa-wrench"></i></button>
+            <!-- <button id="timer-button" class="sidebar-button">Minuteur <i class="fa-solid fa-hourglass-half"></i></button> -->
+            <div class="sidebar-separator" id="sidebar-separator"></div>
+            <button id="credits-button" class="sidebar-button">Crédits <i class="fa-solid fa-user"></i></button>
+        </div>
 
-    <!-- ---------------- Sidebar & Buttons (Except Loading) ---------------- -->
-    <div class="sidebar" id="sidebar">
-        <button id="clock-button">Horloge <i class="fa-solid fa-clock"></i></button>
-        <button id="chrono-button">Chrono <i class="fa-solid fa-stopwatch"></i></button>
-        <button id="building-button">En travaux <i class="fa-solid fa-wrench"></i></button>
-        <!-- <button id="timer-button">Minuteur <i class="fa-solid fa-hourglass-half"></i></button> -->
-        <div class="sidebar-separator" id="sidebar-separator"></div>
-        <button id="credits-button">Crédits <i class="fa-solid fa-user"></i></button>
-    </div>
+        <button class="sidebar-toggle" id="sidebar-toggle"><i class="fa-solid fa-bars"></i></button>
+        <button class="fullscreen-toggle" id="fullscreen-toggle"><i class="fa-solid fa-expand"></i></button>
 
-    <button class="sidebar-toggle" id="sidebar-toggle"><i class="fa-solid fa-bars"></i></button>
-    <button class="fullscreen-toggle" id="fullscreen-toggle"><i class="fa-solid fa-expand"></i></button>
+        <!-- ---------------- Footer ---------------- -->
+        <footer>
+            <h2 class="hide" id="legal-credits">© 2025 Turtle Timer 🐢 — All Rights Reserved</h2>
+        </footer>
 
-    <!-- ---------------- Footer ---------------- -->
-    <footer>
-        <h2 class="hide" id="legal-credits">© 2025 Turtle Timer 🐢 — All Rights Reserved</h2>
-    </footer>
-
-    <script type="module" src="js/main.js"></script>
-</body>
+        <script type="module" src="js/main.js"></script>
+    </body>
 </html>
