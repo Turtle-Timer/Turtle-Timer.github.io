@@ -14,6 +14,11 @@ export const Sidebar = (() => {
     }
 
     function selectMode(mode, skipHistory = false) {
+        document.querySelectorAll('.sidebar-button').forEach(m => m.classList.remove("active"));
+        const modeButton = document.getElementById(`${mode}-button`);
+        if (modeButton !== null) {
+            modeButton.classList.add("active");
+        }
         if (sidebar.classList.contains("open")) toggle();
         document.querySelectorAll('.mode').forEach(m => setVisibility(m,false));
         let el = document.getElementById("mode-" + mode);
