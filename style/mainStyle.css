@@ -1,0 +1,187 @@
+body {
+    margin:0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    transition:all 0.5s ease-in-out;
+    overflow: hidden;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+}
+body.white {
+    background: url("../images/Background_bright.png") no-repeat center center fixed;
+}
+body.black {
+    background: url("../images/Background_dark.png") no-repeat center center fixed;
+}
+
+.mode {
+    margin:0;
+    width: 100vw;
+    height: 100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: all 0.5s ease-in-out;
+}
+
+.clock-digital, .chrono-digital, .timer-digital {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    font-family: monospace;
+    transform: translate(-50%, -50%);
+    color: #255240;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.25);
+    pointer-events: none;
+}
+
+.hand, .point, .clock-digital, .chrono-digital, .timer-digital, h2 {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.Button {
+    position:fixed;
+    top:0;
+    margin:1em;
+    padding:0.5em 1em;
+    border-radius:4px;
+    border:1px solid #fff;
+    background-color:transparent;
+    color:#fff;
+    font-size:1.5vw;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    z-index: 9;
+}
+.Button:hover {
+    background-color:rgba(255,255,255,0.1);
+    border-color:rgba(255,255,255,0.5);
+    transform: translateX(0.4vw);
+}
+.sidebar-toggle, .fullscreen-toggle, .background-toggle {
+    position: fixed;
+    z-index: 20;
+    background: #255240;
+    color: #fff;
+    border: none;
+    padding: 0.5em 1em;
+    font-size: 1.5vw;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.5s ease-in-out;
+}
+.sidebar-toggle:hover, .fullscreen-toggle:hover, .background-toggle:hover {
+    background-color:#427e66;
+}
+.fullscreen-toggle {
+    bottom: 3vh;
+    right: 1.5vw;
+}
+.background-toggle {
+    bottom: 3vh;
+    right: 7vw;
+}
+
+.mode.credits, .mode.problem, .mode.building, .mode.notfound {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: flex;
+    flex-direction:column;
+    font-size: 3vw;
+}
+.mode.credits p, .mode.problem p, .mode.building p, .mode.notfound p {
+    margin: 0.2vh;
+    color: #fff;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.icon {
+    font-size: 10vw;
+    position: fixed;
+    top: 70%;
+    margin: 0;
+    color: #fff;
+}
+.icon.building {
+    animation: spin 3s linear infinite;
+}
+.icon.problem {
+    display: block;
+    animation: pulse 1s infinite alternate ease-in-out;
+}
+.icon.notfound {
+    display: block;
+    transition: transform 0.1s linear;
+}
+
+footer {
+    text-align: center;
+    padding: 1em;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 1.1vw;
+}
+
+.sidebar::-webkit-scrollbar, .chrono-highlights::-webkit-scrollbar {
+    width:0.7vw;
+    height: auto;
+}
+.sidebar::-webkit-scrollbar-track, .chrono-highlights::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+}
+.sidebar::-webkit-scrollbar-thumb, .chrono-highlights::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.5);
+    border-radius: 10rem;
+}
+.sidebar::-webkit-scrollbar-thumb:hover, .chrono-highlights::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.6);
+}
+
+.hide {
+    opacity: 0;
+    pointer-events:none;
+    user-select: none;
+}
+.hide * {
+    pointer-events:none;
+    user-select: none;
+}
+.show {
+    opacity: 1;
+    pointer-events:visible;
+    user-select: none;
+}
+.show * {
+    pointer-events:visible;
+    user-select: none;
+}
+
+@keyframes bounce {
+    to { transform: translateY(-1vh); opacity: 0.5; }
+}
+@keyframes elastic-spin {
+    0% { transform: rotate(0deg); }
+    60% { transform: rotate(300deg); }
+    100% { transform: rotate(360deg); }
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+@keyframes pulse {
+    from { transform: scale(1); }
+    to   { transform: scale(1.2); }
+}
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
