@@ -31,6 +31,9 @@ document.getElementById('sidebar-toggle').addEventListener('click', () => Sideba
 // ----------------- Fullscreen -----------------
 document.getElementById('fullscreen-toggle').addEventListener('click', toggleFullScreen);
 
+// ----------------- Background -----------------
+document.getElementById('background-toggle').addEventListener('click', toggleBackground);
+
 // ----------------- Global Listeners -----------------
 document.addEventListener("fullscreenchange", () => {
     const fullScreenButton = document.getElementById("fullscreen-toggle");
@@ -59,6 +62,8 @@ document.addEventListener("keydown", (e) => {
 // ----------------- Loader -----------------
 window.addEventListener("load", () => {
     const loader = document.getElementById("loader");
+    const background = localStorage.getItem("background");
+    if (background === "true") toggleBackground();
     setTimeout(() => {
         loader.classList.remove("show");
         loader.classList.add("hide");
@@ -72,6 +77,7 @@ window.addEventListener("DOMContentLoaded", () => {
     Timer.init();
     Sidebar.init();
     const params = new URLSearchParams(window.location.search);
+
     let path = params.get("path");
 
     let mode;
@@ -87,3 +93,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
     Sidebar.selectMode(mode, true);
 });
+
+function toggleBackground() {
+    const backgroundButton = document.getElementById("background-toggle");
+    const body = document.body;
+    body.classList.toggle("black");
+    body.classList.toggle("white");
+
+    backgroundButton.innerHTML = body.classList.contains("black") ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+    localStorage.setItem("background", body.classList.contains("black"));
+}
