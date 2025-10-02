@@ -1,0 +1,107 @@
+img {
+    position:fixed;
+    transition: all 0.5s ease-in-out;
+}
+.cadran {
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    width: 60vw;
+    aspect-ratio: 7 / 3;
+}
+.horloge {
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    width: 110vmin;
+    aspect-ratio: 1 / 1;
+}
+.clock-components {
+    position: fixed;
+    width: 110vmin;
+    height: auto;
+    aspect-ratio: 1/1;
+    pointer-events: none;
+}
+
+.hand {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: 50% 100%;
+    pointer-events: none;
+    z-index: 3;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}
+.hand.hour {
+    width: 1%;
+    height: 18%;
+    background: #255240;
+}
+.hand.minute {
+    width: 0.9%;
+    height: 24%;
+    background: #49a17e;
+}
+.hand.second {
+    width: 0.8%;
+    height: 27%;
+    background: #ff3b3b;
+}
+.hand::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 99%;
+    transform: translateX(-50%);
+    background: inherit;
+    border-radius: 2px;
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+.hand.hour::after {
+    width: 180%;
+    height: 20%;
+}
+.hand.minute::after {
+    width: 150%;
+    height: 25%;
+}
+.hand.second::after {
+    width: 120%;
+    height: 30%;
+}
+.hand.second::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 20%;
+    background: inherit;
+    z-index: -1;
+    clip-path: polygon(50% 100%, 100% 0%, 0% 0%);
+}
+.point {
+    position: absolute;
+    display: block;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 50%;
+    width: 2.5%;
+    aspect-ratio: 1 / 1;
+    background: #255240;
+    z-index: 4;
+}
+
+.Button.Clock.ToggleButton {
+    right: 22vw;
+    width: 13vw;
+}
+.Button.Clock.SecondsButton {
+    right:0;
+    width: 20vw;
+}

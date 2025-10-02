@@ -1,0 +1,73 @@
+.chrono-components {
+    position: fixed;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+.ms-chrono {
+    font-size: 4vw;
+    vertical-align: bottom;
+    margin-left: 0.2em;
+    width: 0.5vw;
+}
+.ms-highlight {
+    font-size: 1vw;
+    vertical-align: bottom;
+    margin-left: 0.2em;
+    width: 0.5vw;
+}
+
+.chrono-highlights {
+    position: absolute;
+    top: 25%;
+    right: 1vw;
+    transform: none;
+    z-index: 5;
+    display: flex;
+    flex-direction: column-reverse;
+    font-family: monospace;
+    font-size: 1.3vw;
+    color: #fff;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.25);
+    height: 50vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: content-box;
+    padding-bottom: 0.5em;
+    gap: 0.5em;
+}
+.highlight {
+    margin: 0;
+    padding: 0.5em 1em;
+    border-radius: 1vw;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.5);
+    transition: all 0.5s ease-in-out;
+}
+.highlight:hover {
+    background: rgba(141, 0, 0, 0.75);
+    transform: translateY(0.4vh);
+}
+
+.Button.Chrono.ClearHighlights {
+    top: 75vh;
+    right: 0;
+    width: 15vw;
+}
+.Button.Chrono.Highlights {
+    right: 58vw;
+    width: 20vw;
+}
+.Button.Chrono.Freeze {
+    right: 39vw;
+    width: 17vw;
+}
+.Button.Chrono.Start-Stop {
+    right: 22vw;
+    width: 15vw;
+}
+.Button.Chrono.Reset {
+    right: 0;
+    width: 20vw;
+}

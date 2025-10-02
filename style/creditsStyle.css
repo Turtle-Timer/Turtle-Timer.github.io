@@ -1,0 +1,50 @@
+.mode.credits a {
+    color: #fff;
+    text-decoration: none;
+}
+.mode.credits a:hover {
+    text-decoration: underline;
+}
+
+.icon.credits {
+    display: block;
+    font-weight: bold;
+    background: linear-gradient(
+        270deg,
+        #C79870,
+        #4CAF7D,
+        #7DD9A7,
+        #4DBCE9,
+        #6FE7F0,
+        #F5D46B,
+        #C79870,
+        #4CAF7D
+    );
+    background-size: 600% 600%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow 10s linear infinite;
+}
+.icon.credits::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.4vh;
+    width: 100%;
+    height: 0.6vh;
+    border-radius: 4px;
+    background: linear-gradient(
+        270deg,
+        #C79870,
+        #4CAF7D,
+        #7DD9A7,
+        #4DBCE9,
+        #6FE7F0,
+        #F5D46B,
+        #C79870,
+        #4CAF7D
+    );
+    background-size: 600% 600%;
+    animation: rainbow 10s linear infinite;
+}
