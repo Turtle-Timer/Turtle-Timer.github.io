@@ -2,7 +2,6 @@ body {
     margin:0;
     width: 100%;
     height: 100%;
-    background: url("images/Background.png") no-repeat center center fixed;
     background-size: cover;
     transition:all 0.5s ease-in-out;
     overflow: hidden;
@@ -10,6 +9,12 @@ body {
     user-select: none;
     -webkit-user-select: none;
     -webkit-app-region: drag;
+}
+body.white {
+    background: url("images/Background_bright.png") no-repeat center center fixed;
+}
+body.black {
+    background: url("images/Background_dark.png") no-repeat center center fixed;
 }
 
 .loader {
@@ -347,7 +352,7 @@ img {
 .sidebar.open {
     transform: translateX(0);
 }
-.sidebar-toggle, .fullscreen-toggle {
+.sidebar-toggle, .fullscreen-toggle, .background-toggle {
     position: fixed;
     z-index: 20;
     background: #255240;
@@ -359,7 +364,7 @@ img {
     border-radius: 4px;
     transition: all 0.5s ease-in-out;
 }
-.sidebar-toggle:hover, .fullscreen-toggle:hover {
+.sidebar-toggle:hover, .fullscreen-toggle:hover, .background-toggle:hover {
     background-color:#427e66;
 }
 .sidebar-toggle {
@@ -369,6 +374,10 @@ img {
 .fullscreen-toggle {
     bottom: 3vh;
     right: 1.5vw;
+}
+.background-toggle {
+    bottom: 3vh;
+    right: 7vw;
 }
 
 .mode.credits, .mode.problem, .mode.building, .mode.notfound {
