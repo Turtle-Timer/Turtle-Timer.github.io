@@ -19,8 +19,10 @@ img {
 .clock-components {
     position: fixed;
     width: 110vmin;
-    height: auto;
     aspect-ratio: 1/1;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
     pointer-events: none;
 }
 
