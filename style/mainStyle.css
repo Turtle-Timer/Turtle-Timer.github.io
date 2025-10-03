@@ -61,7 +61,7 @@ body.black {
     border-color:rgba(255,255,255,0.5);
     transform: translateX(0.4vw);
 }
-.sidebar-toggle, .fullscreen-toggle, .background-toggle {
+.sidebar-toggle, .fullscreen-toggle, .background-toggle, .sound-toggle {
     position: fixed;
     z-index: 20;
     background: #255240;
@@ -73,7 +73,7 @@ body.black {
     border-radius: 4px;
     transition: all 0.5s ease-in-out;
 }
-.sidebar-toggle:hover, .fullscreen-toggle:hover, .background-toggle:hover {
+.sidebar-toggle:hover, .fullscreen-toggle:hover, .background-toggle:hover, .sound-toggle:hover {
     background-color:#427e66;
 }
 .fullscreen-toggle {
@@ -83,6 +83,10 @@ body.black {
 .background-toggle {
     bottom: 3vh;
     right: 7vw;
+}
+.sound-toggle {
+    bottom: 3vh;
+    right: 12.5vw;
 }
 
 .mode.credits, .mode.problem, .mode.building, .mode.notfound {
