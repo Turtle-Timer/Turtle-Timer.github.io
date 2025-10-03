@@ -133,7 +133,7 @@ export const Chrono = (() => {
                     time = highlight.innerHTML;
                     highlight.innerHTML = "Supprimer <i class='fa-solid fa-trash-can'></i> ?";
                     highlight.dataset.delete = true;
-                    setTimeout(() => highlight.innerHTML = time, 3000);
+                    setTimeout(() => {highlight.innerHTML = time; highlight.dataset.delete = false;}, 3000);
                 }
             })
         } else {
@@ -160,6 +160,14 @@ export const Chrono = (() => {
             setTimeout(() => {$clearHighlightsButton.disabled = false; $clearHighlightsButton.innerHTML = "Tout effacer <i class='fa-solid fa-trash-can'></i>";}, 1000);
         }
     }
+
+    document.addEventListener("keydown", (e) => {
+        if ($mode.classList.contains("show")) {
+            if (e.code === "Space") startStop();
+            if (e.code === "Enter") saveTime();
+            if (e.key === "f") freezeScreen();
+        }
+    });
 
     function loop() {
         if ($mode.classList.contains("show") && isrunning && !freezed) update();
