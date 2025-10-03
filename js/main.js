@@ -6,17 +6,21 @@ import { Sidebar } from './sidebar.js';
 import { toggleFullScreen } from './helpers.js';
 import { notFound } from './notfound.js';
 
+var soundVolume = localStorage.getItem("sound") || 1;
+const clickSound = new Audio('../sounds/button_click.mp3');
+const trashSound = new Audio('../sounds/trash_chrono.mp3');
+const starStopSound = new Audio('../sounds/start_stop_chrono.mp3');
 
 // ----------------- Clock Buttons -----------------
-document.getElementById('SecondsButton').addEventListener('click', () => Clock.displaySeconds());
-document.getElementById('ToggleButton').addEventListener('click', () => Clock.toggleType());
+document.getElementById('SecondsButton').addEventListener('click', () => {Clock.displaySeconds(); clickSound.volume = soundVolume; clickSound.play();});
+document.getElementById('ToggleButton').addEventListener('click', () => {Clock.toggleType(); clickSound.volume = soundVolume; clickSound.play();});
 
 // ----------------- Chrono Buttons -----------------
-document.getElementById('ClearHighlightsButton').addEventListener('click', () => Chrono.clearAll());
-document.getElementById('HighlightsButton').addEventListener('click', () => Chrono.saveTime());
-document.getElementById('FreezeButton').addEventListener('click', () => Chrono.freezeScreen());
-document.getElementById('StartStopButton').addEventListener('click', () => Chrono.startStop());
-document.getElementById('ResetButton').addEventListener('click', () => Chrono.reset());
+document.getElementById('ClearHighlightsButton').addEventListener('click', () => {Chrono.clearAll(); trashSound.volume = soundVolume; trashSound.play();});
+document.getElementById('HighlightsButton').addEventListener('click', () => {Chrono.saveTime(); starStopSound.volume = soundVolume; starStopSound.play();});
+document.getElementById('FreezeButton').addEventListener('click', () => {Chrono.freezeScreen(); clickSound.volume = soundVolume; clickSound.play();});
+document.getElementById('StartStopButton').addEventListener('click', () => {Chrono.startStop(); starStopSound.volume = soundVolume; starStopSound.play();});
+document.getElementById('ResetButton').addEventListener('click', () => {Chrono.reset(); trashSound.volume = soundVolume; trashSound.play();});
 
 // ----------------- Timer Buttons -----------------
 
@@ -33,6 +37,9 @@ document.getElementById('fullscreen-toggle').addEventListener('click', toggleFul
 
 // ----------------- Background -----------------
 document.getElementById('background-toggle').addEventListener('click', toggleBackground);
+
+// ----------------- Sound -----------------
+document.getElementById('sound-toggle').addEventListener('click', toggleSound);
 
 // ----------------- Global Listeners -----------------
 document.addEventListener("fullscreenchange", () => {
@@ -59,11 +66,21 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
+document.addEventListener("keydown", (e) => {
+    const modes = ["clock", "chrono", "building", "credits"];
+    if (e.key === "Escape") Sidebar.toggle();
+    if (e.key === "Tab") Sidebar.selectMode(modes[(modes.indexOf(localStorage.getItem("lastMode")) + 1) % modes.length]);
+});
+
 // ----------------- Loader -----------------
 window.addEventListener("load", () => {
     const loader = document.getElementById("loader");
     const background = localStorage.getItem("background");
     if (background === "true") toggleBackground();
+
+    const sound = localStorage.getItem("sound");
+    if (sound === "0") toggleSound();
+
     setTimeout(() => {
         loader.classList.remove("show");
         loader.classList.add("hide");
@@ -97,9 +114,28 @@ window.addEventListener("DOMContentLoaded", () => {
 function toggleBackground() {
     const backgroundButton = document.getElementById("background-toggle");
     const body = document.body;
+    backgroundButton.disabled = true;
+
     body.classList.toggle("black");
     body.classList.toggle("white");
 
     backgroundButton.innerHTML = body.classList.contains("black") ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
     localStorage.setItem("background", body.classList.contains("black"));
+
+    setTimeout(() => {
+        backgroundButton.disabled = false;
+    }, 1000);
+}
+
+function toggleSound() {
+    const soundButton = document.getElementById("sound-toggle");
+    soundButton.disabled = true;
+
+    soundVolume = soundVolume === 0 ? 1 : 0;
+    soundButton.innerHTML = soundVolume === 0 ? '<i class="fa-solid fa-volume-mute"></i>' : '<i class="fa-solid fa-volume-up"></i>';
+    localStorage.setItem("sound", soundVolume);
+
+    setTimeout(() => {
+        soundButton.disabled = false;
+    }, 1000);
 }
