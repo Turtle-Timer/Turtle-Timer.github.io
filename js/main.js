@@ -93,6 +93,21 @@ window.addEventListener("load", () => {
     }, 1000);
     logConnection()
     setTimeout(() => {getTotalConnections();}, 1000);
+    supabase
+        .channel('connexions-realtime')
+        .on('postgres_changes', 
+            { event: 'INSERT', schema: 'public', table: 'connections' },
+            () => {
+                getTotalConnections()
+            }
+        )
+        .on('postgres_changes', 
+            { event: 'DELETE', schema: 'public', table: 'connections' },
+            () => {
+                getTotalConnections()
+            }
+        )
+        .subscribe();
 });
 
 // ----------------- Sidebar Init -----------------
@@ -160,19 +175,3 @@ async function logConnection() {
         .from("connections")
         .insert([{ timestamp: new Date().toISOString() }]);
 }
-
-supabase
-    .channel('connexions-realtime')
-    .on('postgres_changes', 
-        { event: 'INSERT', schema: 'public', table: 'connections' },
-        () => {
-            getTotalConnections()
-        }
-    )
-    .on('postgres_changes', 
-        { event: 'DELETE', schema: 'public', table: 'connections' },
-        () => {
-            getTotalConnections()
-        }
-    )
-    .subscribe();
