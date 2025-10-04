@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="style/timerStyle.css">
         <link rel="stylesheet" href="style/creditsStyle.css">
         <link rel="stylesheet" href="style/sidebarStyle.css">
+        <link rel="stylesheet" href="style/statsStyle.css">
         <title>Turtle Timer 🐢</title>
     </head>
     <body class="white">
@@ -94,6 +95,18 @@
             <h3 class="icon credits">TurtleSmile</h3>
         </div>
 
+        <!-- ---------------- Stats Page ---------------- -->
+        <div class="mode stats hide" id="mode-stats">
+            <div class="stats-box left">
+                <p class="stats-nb-connections" id="credits-nb-connections"></p>
+                <p>Lignes de code : beaucoup trop</p>
+            </div>
+            <div class="stats-box right">
+                <p>Temps de sommeil : 3 minutes</p>
+                <p>Salades mangées : 28 laitues</p>
+            </div>
+        </div>
+
         <!-- ---------------- Problem Page ---------------- -->
         <div class="mode problem hide" id="mode-problem">
             <p id="credits-warning"><span style="font-weight: bold;">Vous ne pouvez pas faire ça, merci de respecter les droits d'auteur !</span></p>
@@ -120,6 +133,7 @@
             <!-- <button id="timer-button" class="sidebar-button">Minuteur <i class="fa-solid fa-hourglass-half"></i></button> -->
             <div class="sidebar-separator" id="sidebar-separator"></div>
             <button id="credits-button" class="sidebar-button">Crédits <i class="fa-solid fa-user"></i></button>
+            <button id="stats-button" class="sidebar-button">Statistiques <i class="fa-solid fa-chart-line"></i></button>
         </div>
 
         <button class="sidebar-toggle" id="sidebar-toggle"><i class="fa-solid fa-bars"></i></button>
