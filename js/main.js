@@ -5,11 +5,16 @@ import { Timer } from './timer.js';
 import { Sidebar } from './sidebar.js';
 import { toggleFullScreen } from './helpers.js';
 import { notFound } from './notfound.js';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
 var soundVolume = localStorage.getItem("sound") || 1;
 const clickSound = new Audio('../sounds/button_click.mp3');
 const trashSound = new Audio('../sounds/trash_chrono.mp3');
 const starStopSound = new Audio('../sounds/start_stop_chrono.mp3');
+
+const supabaseUrl = "https://xqvemmmwqukzkokkmmok.supabase.co"
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxdmVtbW13cXVremtva2ttbW9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1NjY2NDgsImV4cCI6MjA3NTE0MjY0OH0.o5dstJ6Zvq0j0bHyClGHH5xCWbFRZK6TYdU6AMKPcVw"
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 // ----------------- Clock Buttons -----------------
 document.getElementById('SecondsButton').addEventListener('click', () => {Clock.displaySeconds(); clickSound.volume = soundVolume; clickSound.play();});
@@ -31,6 +36,7 @@ document.getElementById('building-button').addEventListener('click', () => Sideb
 document.getElementById('credits-button').addEventListener('click', () => Sidebar.selectMode('credits'));
 // document.getElementById('timer-button').addEventListener('click', () => Sidebar.selectMode('timer'));
 document.getElementById('sidebar-toggle').addEventListener('click', () => Sidebar.toggle());
+document.getElementById('stats-button').addEventListener('click', () => Sidebar.selectMode('stats'));
 
 // ----------------- Fullscreen -----------------
 document.getElementById('fullscreen-toggle').addEventListener('click', toggleFullScreen);
@@ -85,6 +91,8 @@ window.addEventListener("load", () => {
         loader.classList.remove("show");
         loader.classList.add("hide");
     }, 1000);
+    logConnection()
+    setTimeout(() => {getTotalConnections();}, 1000);
 });
 
 // ----------------- Sidebar Init -----------------
@@ -139,3 +147,32 @@ function toggleSound() {
         soundButton.disabled = false;
     }, 1000);
 }
+
+async function getTotalConnections() {
+    const { count } = await supabase
+        .from("connections")
+        .select("id", { count: "exact" }); 
+    document.getElementById("credits-nb-connections").innerText = `Nombre de connexions : ${count}`
+}
+
+async function logConnection() {
+    await supabase
+        .from("connections")
+        .insert([{ timestamp: new Date().toISOString() }]);
+}
+
+supabase
+    .channel('connexions-realtime')
+    .on('postgres_changes', 
+        { event: 'INSERT', schema: 'public', table: 'connections' },
+        () => {
+            getTotalConnections()
+        }
+    )
+    .on('postgres_changes', 
+        { event: 'DELETE', schema: 'public', table: 'connections' },
+        () => {
+            getTotalConnections()
+        }
+    )
+    .subscribe();
