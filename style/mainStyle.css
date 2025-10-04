@@ -101,7 +101,6 @@ body.black {
     font-size: 3vw;
 }
 .mode.credits p, .mode.problem p, .mode.building p, .mode.notfound p {
-    margin: 0.2vh;
     color: #fff;
     width: 70%;
     margin: 0 auto;
