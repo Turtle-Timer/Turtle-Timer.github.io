@@ -52,7 +52,7 @@ body.black {
     border:1px solid #fff;
     background-color:transparent;
     color:#fff;
-    font-size:1.5vw;
+    font-size:1vw;
     cursor: pointer;
     transition: all 0.5s ease-in-out;
     z-index: 9;
